@@ -9,17 +9,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'db/data-source';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
-import { Right } from './role-right/entities/right.entity';
-import { Role } from './role-right/entities/role.entity';
 import { RoleRightModule } from './role-right/role-right.module';
-import { User } from './user/entitites/user.entity';
 import { UserModule } from './user/user.module';
-
+import GraphQLJSON from 'graphql-type-json';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
+      resolvers: { JSON: GraphQLJSON },
 
       autoSchemaFile: {
         federation: 2,

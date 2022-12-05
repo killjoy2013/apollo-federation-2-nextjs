@@ -2,12 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type Right {
   id: Int!
-  userName: String!
-  firstName: String!
-  lastName: String!
-  refreshToken: String!
+  name: String!
+  description: String!
   roles: [Role!]
 }
 
@@ -19,11 +17,18 @@ type Role {
   users: [User!]
 }
 
-type Right {
+type User {
   id: Int!
-  name: String!
-  description: String!
+  userName: String!
+  firstName: String!
+  lastName: String!
+  refreshToken: String!
   roles: [Role!]
+}
+
+type LoginResponse {
+  access_token: String!
+  user: User!
 }
 
 type Query {
@@ -31,7 +36,7 @@ type Query {
   roles(name: String): [Role!]!
   right(id: Float!): Right!
   rights(name: String): [Right!]!
-  user(id: Float!): User!
+  user(username: String!): User!
   users(userName: String): [User!]!
 }
 
@@ -47,6 +52,7 @@ type Mutation {
   removeRight(id: Float!): Int!
   assignRightToRole(rightName: String!, roleName: String!): String!
   revokeRightFromRole(rightName: String!, roleName: String!): String!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Float!): Int!
@@ -72,6 +78,11 @@ input UpdateRightInput {
   name: String
   description: String
   id: Int!
+}
+
+input LoginUserInput {
+  username: String!
+  password: String!
 }
 
 input CreateUserInput {

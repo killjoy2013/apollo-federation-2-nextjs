@@ -43,5 +43,13 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "dependencies": {
+    "@nestjs/passport": "^9.0.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/passport-local": "^1.0.34"
   }
 }
