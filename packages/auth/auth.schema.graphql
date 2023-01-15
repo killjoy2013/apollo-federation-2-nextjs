@@ -28,7 +28,7 @@ type User {
 
 type LoginResponse {
   access_token: String!
-  user: User!
+  rights: [String!]
 }
 
 type Query {

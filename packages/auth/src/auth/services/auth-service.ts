@@ -12,7 +12,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<any> {
+  async validateUser(username: string, password: string): Promise<User> {
     if (!username || !password) {
       return null;
     }
@@ -27,12 +27,17 @@ export class AuthService {
   }
 
   async login(user: User) {
+    const rights = [];
+    user.roles.forEach((role) =>
+      role.rights.forEach((right) => rights.push(right.name)),
+    );
+
     return {
       access_token: this.jwtService.sign({
         username: user.userName,
         sub: user.id,
       }),
-      user,
+      rights,
     };
   }
 }

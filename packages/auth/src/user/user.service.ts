@@ -15,7 +15,16 @@ export class UserService {
   }
 
   async findOne(userName: string) {
-    return await this.userRepo.findOneBy({ userName });
+    return await this.userRepo.findOne({
+      where: {
+        userName,
+      },
+      relations: {
+        roles: {
+          rights: true,
+        },
+      },
+    });
   }
 
   async findAll(userName: string = null): Promise<User[]> {
