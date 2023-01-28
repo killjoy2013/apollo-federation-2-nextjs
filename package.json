@@ -6,6 +6,10 @@
   "repository": "https://github.com/killjoy2013/apollo-graphql-federation-next-auth.git",
   "author": "murat arslan <killjoy_tr@yahoo.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "concurrently \"yarn workspace country start:dev\" \"yarn workspace food start:dev\" \"yarn workspace auth start:dev\" \"yarn workspace people start:dev\"",
+    "start:gateway": "yarn workspace gateway start:dev"
+  },
   "dependencies": {
     "@apollo/federation": "~0.37.1",
     "@apollo/subgraph": "~2.1.4",
@@ -50,6 +54,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
+    "concurrently": "^7.6.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^3.4.0",

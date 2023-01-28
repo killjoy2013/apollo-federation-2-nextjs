@@ -26,21 +26,21 @@ function jwtValidationRule(context: ValidationContext | SDLValidationContext) {
         introspection: true,
         //plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
         //playground: false,
-        // context: ({ req }) => {
-        //   if (req.body.operationName === 'login') {
-        //     return {};
-        //   } else if (req.user) {
-        //     const user = req.user;
-        //     return { user };
-        //   } else {
-        //     console.error(
-        //       'Authentication error while creating GQL Context',
-        //       new Date().toLocaleTimeString(),
-        //     );
-        //     throw new Error('Authentication error while creating GQL Context');
-        //   }
-        // },
-        //validationRules: [jwtValidationRule],
+        context: ({ req }) => {
+          if (req.body.operationName === 'login') {
+            return {};
+          } else if (req.user) {
+            const user = req.user;
+            return { user };
+          } else {
+            console.error(
+              'Authentication error while creating GQL Context',
+              new Date().toLocaleTimeString(),
+            );
+            throw new Error('Authentication error while creating GQL Context');
+          }
+        },
+        validationRules: [jwtValidationRule],
       },
       gateway: {
         buildService({ name, url }) {

@@ -36,6 +36,7 @@ export class AuthService {
       access_token: this.jwtService.sign({
         username: user.userName,
         sub: user.id,
+        algorithms: ['HS512'],
       }),
       rights,
     };
