@@ -1,0 +1,139 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+{
+  query: Query
+  mutation: Mutation
+}
+
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable", "@external", "@override", "@requires", "@tag", "@inaccessible", "@extends", "@provides"])
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+directive @key(fields: federation__FieldSet!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
+
+directive @requires(fields: federation__FieldSet!) on FIELD_DEFINITION
+
+directive @provides(fields: federation__FieldSet!) on FIELD_DEFINITION
+
+directive @external(reason: String) on OBJECT | FIELD_DEFINITION
+
+directive @tag(name: String!) repeatable on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @extends on OBJECT | INTERFACE
+
+directive @shareable on OBJECT | FIELD_DEFINITION
+
+directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @override(from: String!) on FIELD_DEFINITION
+
+directive @federation__composeDirective(name: String) repeatable on SCHEMA
+
+type Right {
+  id: Int!
+  name: String!
+  description: String!
+  roles: [Role!]
+}
+
+type Role {
+  id: Int!
+  name: String!
+  description: String!
+  rights: [Right!]
+  users: [User!]
+}
+
+type User {
+  id: Int!
+  userName: String!
+  firstName: String!
+  lastName: String!
+  refreshToken: String!
+  roles: [Role!]
+}
+
+type Query {
+  role(id: Float!): Role!
+  roles(name: String): [Role!]!
+  right(id: Float!): Right!
+  rights(name: String): [Right!]!
+  user(username: String!): User!
+  users(userName: String): [User!]!
+  _service: _Service!
+}
+
+type Mutation {
+  createRole(createRoleInput: CreateRoleInput!): Role!
+  updateRole(updateRoleInput: UpdateRoleInput!): Role!
+  removeRole(id: Float!): Int!
+  assignRoleToUser: String!
+  revokeRoleFromUser: String!
+  revokeAllRolesFromUser: String!
+  createRight(createRightInput: CreateRightInput!): Right!
+  updateRight(updateRightInput: UpdateRightInput!): Right!
+  removeRight(id: Float!): Int!
+  assignRightToRole(rightName: String!, roleName: String!): String!
+  revokeRightFromRole(rightName: String!, roleName: String!): String!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Float!): Int!
+}
+
+input CreateRoleInput {
+  name: String!
+  description: String
+}
+
+input UpdateRoleInput {
+  name: String
+  description: String
+  id: Int!
+}
+
+input CreateRightInput {
+  name: String!
+  description: String
+}
+
+input UpdateRightInput {
+  name: String
+  description: String
+  id: Int!
+}
+
+input CreateUserInput {
+  userName: String!
+  firstName: String!
+  lastName: String!
+}
+
+input UpdateUserInput {
+  userName: String
+  firstName: String
+  lastName: String
+  id: Int!
+}
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+scalar link__Import
+
+scalar federation__FieldSet
+
+scalar _Any
+
+type _Service {
+  sdl: String
+}

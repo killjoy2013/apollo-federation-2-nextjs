@@ -26,11 +26,6 @@ type User {
   roles: [Role!]
 }
 
-type LoginResponse {
-  access_token: String!
-  rights: [String!]
-}
-
 type Query {
   role(id: Float!): Role!
   roles(name: String): [Role!]!
@@ -52,7 +47,6 @@ type Mutation {
   removeRight(id: Float!): Int!
   assignRightToRole(rightName: String!, roleName: String!): String!
   revokeRightFromRole(rightName: String!, roleName: String!): String!
-  login(loginUserInput: LoginUserInput!): LoginResponse!
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Float!): Int!
@@ -78,11 +72,6 @@ input UpdateRightInput {
   name: String
   description: String
   id: Int!
-}
-
-input LoginUserInput {
-  username: String!
-  password: String!
 }
 
 input CreateUserInput {

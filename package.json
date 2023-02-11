@@ -11,13 +11,12 @@
     "start:gateway": "yarn workspace gateway start:dev"
   },
   "dependencies": {
-    "@apollo/federation": "~0.37.1",
     "@apollo/subgraph": "~2.1.4",
-    "@nestjs/apollo": "~10.1.4",
-    "@nestjs/common": "~9.2.0",
+    "@nestjs/apollo": "~10.1.7",
+    "@nestjs/common": "~9.3.2",
     "@nestjs/config": "~2.2.0",
     "@nestjs/core": "~9.2.0",
-    "@nestjs/graphql": "~10.1.5",
+    "@nestjs/graphql": "~10.1.7",
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "~9.2.0",

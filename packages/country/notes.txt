@@ -1,6 +1,6 @@
-rover subgraph introspect http://localhost:3200/graphql > country.schema.graphql
+rover subgraph introspect http://localhost:3200/graphql > introspect.schema.graphql
 
-
-rover subgraph publish My-Graph-V2@current \
-  --name country --schema ./country.schema.graphql \
-  --routing-url http://localhost:3200/graphql
+APOLLO_KEY=service:My-Graph-V2:YeUASB9iF5IkUEvHUG0gEQ APOLLO_GRAPH_REF=My-Graph-V2@current rover subgraph publish My-Graph-V2@current \
+--schema ./introspect.schema.graphql \
+--name country \
+--routing-url http://localhost:3200/graphql

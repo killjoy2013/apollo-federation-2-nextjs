@@ -1,6 +1,7 @@
-rover subgraph introspect http://localhost:3300/graphql > food.schema.graphql
+rover subgraph introspect http://localhost:3300/graphql > introspect.schema.graphql
 
 
-rover subgraph publish My-Graph-V2@current \
-  --name food --schema ./food.schema.graphql \
-  --routing-url http://localhost:3300/graphql
+APOLLO_KEY=service:My-Graph-V2:YeUASB9iF5IkUEvHUG0gEQ APOLLO_GRAPH_REF=My-Graph-V2@current rover subgraph publish My-Graph-V2@current \
+--schema ./introspect.schema.graphql \
+--name food \
+--routing-url http://localhost:3300/graphql

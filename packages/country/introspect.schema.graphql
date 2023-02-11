@@ -1,0 +1,149 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+{
+  query: Query
+  mutation: Mutation
+}
+
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable", "@external", "@override", "@requires", "@tag", "@inaccessible", "@extends", "@provides"])
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+directive @key(fields: federation__FieldSet!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
+
+directive @requires(fields: federation__FieldSet!) on FIELD_DEFINITION
+
+directive @provides(fields: federation__FieldSet!) on FIELD_DEFINITION
+
+directive @external(reason: String) on OBJECT | FIELD_DEFINITION
+
+directive @tag(name: String!) repeatable on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @extends on OBJECT | INTERFACE
+
+directive @shareable on OBJECT | FIELD_DEFINITION
+
+directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @override(from: String!) on FIELD_DEFINITION
+
+directive @federation__composeDirective(name: String) repeatable on SCHEMA
+
+type Treaty {
+  id: Int!
+  name: String!
+  countries: [Country!]
+}
+
+type Country
+  @key(fields: "id")
+{
+  id: Int!
+  name: String!
+  population: Int
+  cities: [City!]
+  treaties: [Treaty!]
+  capital: City!
+  continent: Continent
+}
+
+enum Continent {
+  Asia
+  Europe
+  America
+  Africa
+}
+
+type City
+  @key(fields: "id")
+{
+  id: Int!
+  name: String!
+  touristic: Boolean
+  population: Int
+}
+
+type Query {
+  countries: [Country!]!
+  findOne(id: Int!): Country!
+  cities(name: String): [City!]!
+  city(id: Int!): City!
+  treaties: [Treaty!]!
+  treaty(id: Int!): Treaty!
+  _entities(representations: [_Any!]!): [_Entity]!
+  _service: _Service!
+}
+
+type Mutation {
+  createCountry(input: CreateCountryInput!): Country!
+  updateCountry(input: UpdateCountryInput!): Country!
+  removeCountry(id: Int!): Int
+  addCountryToTreaty(countryId: Int!, treatyId: Int!): Country!
+  removeCountryFromTreaty(countryId: Int!, treatyId: Int!): Country!
+  createCity(input: CreateCityInput!): City!
+  updateCity(input: UpdateCityInput!): City!
+  removeCity(id: Int!): Int
+  createTreaty(input: CreateTreatyInput!): Treaty!
+  updateTreaty(input: UpdateTreatyInput!): Treaty!
+  removeTreaty(id: Int!): Treaty!
+}
+
+input CreateCountryInput {
+  name: String!
+  population: Int
+  continent: Continent
+}
+
+input UpdateCountryInput {
+  name: String
+  population: Int
+  continent: Continent
+  id: Int!
+}
+
+input CreateCityInput {
+  name: String!
+  population: Int
+  countryId: Int!
+}
+
+input UpdateCityInput {
+  name: String
+  population: Int
+  countryId: Int
+  id: Int!
+}
+
+input CreateTreatyInput {
+  name: String!
+}
+
+input UpdateTreatyInput {
+  name: String
+  id: Int!
+}
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+scalar link__Import
+
+scalar federation__FieldSet
+
+scalar _Any
+
+type _Service {
+  sdl: String
+}
+
+union _Entity = City | Country

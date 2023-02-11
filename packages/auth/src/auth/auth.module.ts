@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entitites/user.entity';
 import { UserModule } from 'src/user/user.module';
 import { UserService } from 'src/user/user.service';
-import { AuthResolver } from './auth.resolver';
+
 import { LocalStrategy } from './local.strategy';
 import { AuthService } from './services/auth-service';
+import { TokenController } from './controllers/token/token.controller';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { AuthService } from './services/auth-service';
     }),
   ],
 
-  providers: [AuthService, AuthResolver, LocalStrategy, UserService],
+  providers: [AuthService, LocalStrategy, UserService],
   exports: [UserModule],
+  controllers: [TokenController],
 })
 export class AuthModule {}

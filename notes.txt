@@ -4,3 +4,15 @@ yarn set version 1.22.19
 
 
 yarn workspace gateway start:dev
+
+
+APOLLO_KEY=service:My-Graph-V2:YeUASB9iF5IkUEvHUG0gEQ
+APOLLO_GRAPH_REF=My-Graph-V2@current
+
+
+
+
+
+
+
+

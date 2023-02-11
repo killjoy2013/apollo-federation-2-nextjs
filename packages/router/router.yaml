@@ -1,0 +1,31 @@
+headers:
+  all:
+    request:
+      - propagate:
+          named: 'Authorization'
+include_subgraph_errors:
+  all: true # Propagate errors from all subgraphs
+cors:
+  origins:
+    - http://localhost:4000 # Allows any locally-running client to run against your Router
+    - https://studio.apollographql.com # Allows Apollo Studio to still run queries against your Router
+
+# supergraph:
+#   introspection: true
+# authentication:
+#   experimental:
+#     jwt:
+#       jwks_url: https://dev-zzp5enui.us.auth0.com/.well-known/jwks.json
+#       header_name: Different
+#       header_value_prefix: Prefix
+#       cooldown: 30s
+# headers:
+#   all:
+#     request:
+#       - propagate:
+#           named: user
+# cors:
+#   origins:
+#     - http://127.0.0.1:4000
+#     - https://studio.apollographql.com
+#   allow_credentials: true

@@ -1,0 +1,7 @@
+POST http://localhost:3100/token
+content-type: application/json
+
+{
+    "username": "admin",
+    "password": "123"
+}
