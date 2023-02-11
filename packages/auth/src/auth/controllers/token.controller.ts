@@ -25,13 +25,24 @@ export class TokenController {
 
     const jwtConfig = this.configService.get<JwtConfig>('jwt');
 
-    return {
-      access_token: this.jwtService.sign({
-        rights,
-        username: user.userName,
-        sub: user.id,
-        algorithms: ['HS512'],
-      }),
+    const tokenData = {
+      rights,
+      username: user.userName,
+      sub: user.id,
+      iss: jwtConfig.iss,
     };
+
+    return {
+      accessToken: this.jwtService.sign(tokenData),
+    };
+
+    // return {
+    //   access_token: this.jwtService.sign({
+    //     rights,
+    //     username: user.userName,
+    //     sub: user.id,
+    //     algorithms: ['HS512'],
+    //   }),
+    // };
   }
 }

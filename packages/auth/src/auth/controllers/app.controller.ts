@@ -37,9 +37,13 @@ export class AppController {
 
   @Get('.well-known/jwks.json')
   getJwks() {
-    const { kid, privateKey } = this.config.get<JwtConfig>('jwt');
+    const { kid, privateKey, algorithm } = this.config.get<JwtConfig>('jwt');
 
-    const key = rsaPemToJwk(privateKey, { use: 'sig', kid }, 'public');
+    const key = rsaPemToJwk(
+      privateKey,
+      { use: 'sig', kid, alg: algorithm },
+      'public',
+    );
 
     return {
       keys: [key],

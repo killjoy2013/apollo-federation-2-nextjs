@@ -2,6 +2,7 @@ db:
   url: 'postgres://postgres:postgres@localhost:5472/pocdb'
 
 jwt:
+  expiration: '360000d'
   kid: keyId
   publicKey: |
     -----BEGIN PUBLIC KEY-----

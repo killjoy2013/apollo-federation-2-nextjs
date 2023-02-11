@@ -11,6 +11,7 @@ import { LocalStrategy } from './local.strategy';
 import { AuthService } from './services/auth-service';
 import { TokenController } from './controllers/token.controller';
 import { AppController } from './controllers/app.controller';
+import { JwtConfigFactory } from './factories/jwt-config.factory';
 
 @Module({
   imports: [
@@ -18,16 +19,13 @@ import { AppController } from './controllers/app.controller';
     TypeOrmModule.forFeature([User]),
     PassportModule,
     UserModule,
-    JwtModule.register({
-      secret: process.env.TOKEN_SECRET,
-      signOptions: {
-        expiresIn: '1h',
-        algorithm: 'HS512',
-      },
+    JwtModule.registerAsync({
+      useClass: JwtConfigFactory,
+      inject: [JwtConfigFactory],
     }),
   ],
 
-  providers: [AuthService, LocalStrategy, UserService],
+  providers: [AuthService, LocalStrategy, UserService, JwtConfigFactory],
   exports: [UserModule],
   controllers: [TokenController, AppController],
 })
