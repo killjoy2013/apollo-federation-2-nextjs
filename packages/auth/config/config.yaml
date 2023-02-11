@@ -1,0 +1,64 @@
+db:
+  url: 'postgres://postgres:postgres@localhost:5472/pocdb'
+
+jwt:
+  kid: keyId
+  publicKey: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAxdMs/SQLMf4ea3rp895z
+    GwLBZlC5tGP30caOlszHYl937XFDmJGp0KLNJY/HjYW2OJx5WTsXUeEtGaxf4nmP
+    87uOy5lw2cdAnAzd8DnM+fmUZZVlwoTYZAyLMkv6/7Ki8eU4NR67AtA/txv0yF26
+    WCI3MjsvabAhk/Tw4jTaZfxHwpmvrOewWoWCVxNagB7bBcnwYp8uHZ5nZtbJQyN+
+    pVlbRdT05hqTbXp3T1vlwt1fw3H1P043F48IBGrLZBFZo71u/2r2U8EeKTHhPzdK
+    YKbMDzah38/mx2sFg8FSgr6LNXMfLBN6WwTLisgzn8aGzAsZSiQpPq9vsh0pvoh2
+    9YRhlAe60+LNHXpAazLNc9rVw9gsgz6NxqJMjrcqcNIUfewv83E8Qm2fojNcgn3U
+    iGG5j6FRERV/MEdEKH2hTw/c1LPX6YaTIfutGGGOCJnSVqp8R7/oT+8iqfuXMMd0
+    nenYCpT6EySQVrbRXEVwaHjxv3otdaMM/TH7/ZqhfIVtAgMBAAE=
+    -----END PUBLIC KEY-----
+
+  privateKey: |
+    -----BEGIN RSA PRIVATE KEY-----
+    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
+    -----END RSA PRIVATE KEY-----
+
+  algorithm: RS256
+  iss: http://localhost:3100
+
+csrf:
+  enabled: false

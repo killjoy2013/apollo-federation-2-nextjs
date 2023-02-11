@@ -12,9 +12,10 @@ import { AuthModule } from './auth/auth.module';
 import { RoleRightModule } from './role-right/role-right.module';
 import { UserModule } from './user/user.module';
 import GraphQLJSON from 'graphql-type-json';
+import configuration from '../config/configuration';
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       resolvers: { JSON: GraphQLJSON },

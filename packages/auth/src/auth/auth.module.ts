@@ -9,7 +9,8 @@ import { UserService } from 'src/user/user.service';
 
 import { LocalStrategy } from './local.strategy';
 import { AuthService } from './services/auth-service';
-import { TokenController } from './controllers/token/token.controller';
+import { TokenController } from './controllers/token.controller';
+import { AppController } from './controllers/app.controller';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { TokenController } from './controllers/token/token.controller';
 
   providers: [AuthService, LocalStrategy, UserService],
   exports: [UserModule],
-  controllers: [TokenController],
+  controllers: [TokenController, AppController],
 })
 export class AuthModule {}
