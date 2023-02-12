@@ -2,8 +2,7 @@ import { Algorithm } from 'jsonwebtoken';
 
 export interface JwtConfig {
   expiration: string;
-  privateKeyPath?: string;
-  publicKeyPath?: string;
+  pk8Key?: string;
   privateKey?: string;
   publicKey?: string;
   algorithm?: Algorithm;
