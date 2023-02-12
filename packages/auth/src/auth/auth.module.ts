@@ -7,17 +7,18 @@ import { User } from 'src/user/entitites/user.entity';
 import { UserModule } from 'src/user/user.module';
 import { UserService } from 'src/user/user.service';
 
-import { LocalStrategy } from './local.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
 import { AuthService } from './services/auth-service';
-import { TokenController } from './controllers/token.controller';
+
 import { AppController } from './controllers/app.controller';
 import { JwtConfigFactory } from './factories/jwt-config.factory';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forFeature([User]),
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     UserModule,
     JwtModule.registerAsync({
       useClass: JwtConfigFactory,
@@ -25,8 +26,14 @@ import { JwtConfigFactory } from './factories/jwt-config.factory';
     }),
   ],
 
-  providers: [AuthService, LocalStrategy, UserService, JwtConfigFactory],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    UserService,
+    JwtConfigFactory,
+  ],
   exports: [UserModule],
-  controllers: [TokenController, AppController],
+  controllers: [AppController],
 })
 export class AuthModule {}

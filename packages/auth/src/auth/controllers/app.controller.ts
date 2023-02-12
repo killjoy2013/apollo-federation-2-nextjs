@@ -1,12 +1,19 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import rsaPemToJwk from 'rsa-pem-to-jwk';
+import { Request } from 'express';
+import { User } from 'src/user/entitites/user.entity';
+import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { Csrf } from '../interfaces/csrf.interface';
 import { JwtConfig } from '../interfaces/jwt-config.interface';
+import { AuthService } from '../services/auth-service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly config: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private authService: AuthService,
+  ) {}
 
   @Get()
   healthCheck() {
@@ -26,7 +33,7 @@ export class AppController {
    */
   @Get('csrfToken')
   csrfToken(@Req() request) {
-    const csrf = this.config.get<Csrf>('csrf');
+    const csrf = this.configService.get<Csrf>('csrf');
 
     if (csrf.enabled) {
       return { token: request.csrfToken() };
@@ -37,7 +44,8 @@ export class AppController {
 
   @Get('.well-known/jwks.json')
   getJwks() {
-    const { kid, privateKey, algorithm } = this.config.get<JwtConfig>('jwt');
+    const { kid, privateKey, algorithm } =
+      this.configService.get<JwtConfig>('jwt');
 
     const key = rsaPemToJwk(
       privateKey,
@@ -48,5 +56,11 @@ export class AppController {
     return {
       keys: [key],
     };
+  }
+
+  @Post('auth/token')
+  @UseGuards(LocalAuthGuard)
+  async generateToken(@Req() req: Request) {
+    return this.authService.login(req.user as User);
   }
 }

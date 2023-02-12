@@ -12,6 +12,8 @@ import { RightService } from './right.service';
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
 import { Role } from './entities/role.entity';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 
 @Resolver(() => Role)
 export class RoleResolver {
@@ -31,6 +33,7 @@ export class RoleResolver {
   }
 
   @Query(() => [Role], { name: 'roles' })
+  @UseGuards(GqlAuthGuard)
   findAll(@Args('name', { nullable: true }) name: string) {
     return this.roleService.findAll(name);
   }

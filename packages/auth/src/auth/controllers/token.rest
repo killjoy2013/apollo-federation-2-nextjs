@@ -1,4 +1,4 @@
-POST http://localhost:3100/token
+POST http://localhost:3100/auth/token
 content-type: application/json
 
 {
