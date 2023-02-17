@@ -12,13 +12,12 @@ export class JwtConfigFactory {
   }
 
   createJwtOptions(): JwtModuleOptions {
-    const { pk8Key, privateKey, publicKey, expiration, algorithm, kid } =
-      this.jwtConfig;
+    const { privateKey, publicKey, expiration, algorithm } = this.jwtConfig;
+
     return {
       publicKey,
       privateKey,
       signOptions: {
-        keyid: kid,
         algorithm,
         expiresIn: expiration,
       },

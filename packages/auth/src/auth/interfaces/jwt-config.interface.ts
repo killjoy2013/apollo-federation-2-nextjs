@@ -5,6 +5,7 @@ export interface JwtConfig {
   pk8Key?: string;
   privateKey?: string;
   publicKey?: string;
+  jwk?: string;
   algorithm?: Algorithm;
   secret: string;
   kid: string;

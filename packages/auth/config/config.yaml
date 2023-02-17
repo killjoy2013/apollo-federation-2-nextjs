@@ -2,8 +2,8 @@ db:
   url: 'postgres://postgres:postgres@localhost:5472/pocdb'
 
 jwt:
-  expiration: '360000d'
-  kid: keyId
+  expiration: '30d'
+  kid: abc123
   publicKey: |
     -----BEGIN PUBLIC KEY-----
     MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAr/kIbUEgL9OQImLd+OYz
@@ -58,47 +58,15 @@ jwt:
     buYmYCBpcvhUD2+i4VGRclu5+sx+xsR37zsn/WaYiDALqEtodgdZ
     -----END RSA PRIVATE KEY-----
 
-  pk8Key: |
-    -----BEGIN PRIVATE KEY-----
-    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
-    xHfvOyf9ZpiIMAuoS2h2B1k=
-    -----END PRIVATE KEY-----
+  # jwk created on https://russelldavies.github.io/jwk-creator/
+  jwk: |
+    {
+      "kty": "RSA",
+      "n": "r_kIbUEgL9OQImLd-OYzlm_F6iUt0fyNlrf4ciGusahtKTAMctBPpFxUdNAniiR3sNcIpHvow8tCXbYNOP5-YChz9-8g_LRacjI-PcHIZvfkcKz81z-hUPZO1RXs5eYUjraQ8G8ccDvIYG66STh5a24jp0c1cyEtzelCLdjxkgCw81zbN64LKEE53hs2pjQ91aiIrZlZ3LUgtclVQ3aXoOBk7jPDa_JI6oN1B5xl6eU0T1kLRlDXSIdT_lpcKP63Whd5MDU5Mtpd7gnwXZDLoulCQnlz9jYPopF8gBrUr6AR57ZWYM4SdeXGc-6XnfxyntbTbliL5pm5jZiHrUpAPZ4E4Lp2rZ99kU3iBrxT3ozqVfivAyAViY2hvnWCuhkpjiyyM5Ji5qSoLlAq27If7ss5XkYTLFkT7XlXwQ4QeH1AvP0hAvBTxi8pStreqCAWghtBCM5WkdEmg7D2PQLYujBvjce7n_8N6sPx70oUDdmN9nKBuOmfBi9dv7vtvoFt",
+      "e": "AQAB",
+      "alg": "RS256",
+      "use": "sig"
+    }
 
   algorithm: RS256
   iss: http://localhost:3100
