@@ -26,8 +26,11 @@ import { TreatyModule } from './treaty/treaty.module';
       },
 
       context: ({ req }) => {
-        const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-        return { user };
+        const username = req.headers.username ?? null;
+
+        const rights = req.headers.rights ?? null;
+
+        return { username, rights };
       },
     }),
 
