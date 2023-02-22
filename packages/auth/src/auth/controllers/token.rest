@@ -5,3 +5,12 @@ content-type: application/json
     "username": "admin",
     "password": "123"
 }
+
+###
+POST http://localhost:3100/auth/token
+content-type: application/json
+
+{
+    "username": "customer",
+    "password": "123"
+}

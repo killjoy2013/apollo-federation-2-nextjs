@@ -17,8 +17,8 @@ authentication:
 #     request:
 #       - propagate:
 #           named: 'Authorization'
-# include_subgraph_errors:
-#   all: true # Propagate errors from all subgraphs
+include_subgraph_errors:
+  all: true # Propagate errors from all subgraphs
 cors:
   origins:
     - http://localhost:4000 # Allows any locally-running client to run against your Router

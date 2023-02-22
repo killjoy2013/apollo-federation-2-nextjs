@@ -26,8 +26,11 @@ import configuration from '../config/configuration';
       },
 
       context: ({ req }) => {
-        const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-        return { user };
+        const username = req.headers.username ?? null;
+        const rights = req.headers.rights
+          ? req.headers.rights.split(',').map((m) => m.trim())
+          : null;
+        return { username, rights };
       },
     }),
 

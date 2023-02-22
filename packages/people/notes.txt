@@ -1,7 +1,0 @@
-rover subgraph introspect http://localhost:3400/graphql > introspect.schema.graphql
-
-
-APOLLO_KEY=service:My-Graph-V2:YeUASB9iF5IkUEvHUG0gEQ APOLLO_GRAPH_REF=My-Graph-V2@current rover subgraph publish My-Graph-V2@current \
---schema ./introspect.schema.graphql \
---name people \
---routing-url http://localhost:3400/graphql

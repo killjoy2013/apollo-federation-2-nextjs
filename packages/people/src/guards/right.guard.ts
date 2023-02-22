@@ -4,6 +4,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -11,16 +12,13 @@ export class RightGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    // const user = {
-    //   name: 'murat',
-    //   roles: ['ordinary'],
-    // };
+    const fieldName = context.getHandler().name;
+    const ctx = GqlExecutionContext.create(context).getContext();
+    const rights = ctx.rights;
 
-    // const requiredRole = 'admin';
-
-    // if (!user.roles.includes(requiredRole)) {
-    //   return false;
-    // }
+    if (!rights || !rights.includes(fieldName)) {
+      throw new UnauthorizedException(`You must have ${fieldName} right`);
+    }
 
     return true;
   }

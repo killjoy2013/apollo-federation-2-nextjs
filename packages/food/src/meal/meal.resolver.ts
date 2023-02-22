@@ -1,5 +1,4 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GetUser } from '../auth/get-user.decorator';
 import { Meal } from './entities/meal.entity';
 import { CreateMealInput } from './dto/create-meal.input';
 import { UpdateMealInput } from './dto/update-meal.input';

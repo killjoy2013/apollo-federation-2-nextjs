@@ -1,3 +1,4 @@
+import { UseGuards } from '@nestjs/common';
 import {
   Args,
   Int,
@@ -6,7 +7,8 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
-import { GetUser } from '../auth/get-user.decorator';
+import { RightGuard } from '../guards/right.guard';
+import { GetUser } from '../decorators/get-user.decorator';
 import { CityService } from './city.service';
 import { CreateCityInput } from './dto/create-city.input';
 import { UpdateCityInput } from './dto/update-city.input';
@@ -22,10 +24,8 @@ export class CityResolver {
   }
 
   @Query(() => [City])
-  cities(
-    @GetUser() user: any,
-    @Args('name', { type: () => String, nullable: true }) name: string,
-  ) {
+  @UseGuards(RightGuard)
+  cities(@Args('name', { type: () => String, nullable: true }) name: string) {
     return this.cityService.findAll(name);
   }
 

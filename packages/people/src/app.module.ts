@@ -10,11 +10,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'db/data-source';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
-import { Hobby } from './hobby/entities/hobby.entity';
 import { HobbyModule } from './hobby/hobby.module';
-import { Address } from './person/entities/address.entity';
 import { City } from './person/entities/city.proxy.entity';
-import { Person } from './person/entities/person.entity';
 
 import { PersonModule } from './person/person.module';
 
@@ -34,8 +31,11 @@ import { PersonModule } from './person/person.module';
       },
 
       context: ({ req }) => {
-        const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-        return { user };
+        const username = req.headers.username ?? null;
+        const rights = req.headers.rights
+          ? req.headers.rights.split(',').map((m) => m.trim())
+          : null;
+        return { username, rights };
       },
     }),
 

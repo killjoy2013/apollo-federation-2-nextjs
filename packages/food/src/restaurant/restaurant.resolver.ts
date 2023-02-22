@@ -8,7 +8,6 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
-import { GetUser } from '../auth/get-user.decorator';
 import { Restaurant } from './entities/restaurant.entity';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';

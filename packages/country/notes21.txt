@@ -1,3 +1,4 @@
+rover subgraph introspect http://localhost:3200/graphql > introspect.schema.graphql
 APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA \
   rover subgraph publish FederatedGraph21@current \
   --schema ./introspect.schema.graphql \

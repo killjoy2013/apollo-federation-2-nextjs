@@ -1,4 +1,3 @@
-// import { OnentModule } from './onent/onent.module';
 import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
@@ -9,11 +8,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'db/data-source';
 import { join } from 'path';
-import { AuthModule } from './auth/auth.module';
-import { Meal } from './meal/entities/meal.entity';
 import { MealModule } from './meal/meal.module';
 import { City } from './restaurant/entities/city.proxy.entity';
-import { Restaurant } from './restaurant/entities/restaurant.entity';
 import { RestaurantModule } from './restaurant/restaurant.module';
 
 @Module({
@@ -31,8 +27,11 @@ import { RestaurantModule } from './restaurant/restaurant.module';
         orphanedTypes: [City],
       },
       context: ({ req }) => {
-        const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-        return { user };
+        const username = req.headers.username ?? null;
+        const rights = req.headers.rights
+          ? req.headers.rights.split(',').map((m) => m.trim())
+          : null;
+        return { username, rights };
       },
     }),
 
@@ -40,7 +39,6 @@ import { RestaurantModule } from './restaurant/restaurant.module';
 
     RestaurantModule,
     MealModule,
-    AuthModule,
   ],
   controllers: [],
   providers: [],

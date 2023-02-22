@@ -9,7 +9,6 @@ export class newMigration1661891561650 implements MigrationInterface {
             select auth.sp_assign_right_to_role ('countries','ADMIN_ROLE');
             select auth.sp_assign_right_to_role ('countries','USER_ROLE');
             select auth.sp_assign_right_to_role ('cities','ADMIN_ROLE');
-            select auth.sp_assign_right_to_role ('cities','USER_ROLE');
             
             select auth.sp_revoke_right_from_role ('removeCity','USER_ROLE');
             

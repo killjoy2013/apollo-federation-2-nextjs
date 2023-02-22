@@ -10,7 +10,9 @@ import { CountryService } from './country.service';
 import { Country } from './entities/country.entity';
 import { CreateCountryInput } from './dto/create-country.input';
 import { UpdateCountryInput } from './dto/update-country.input';
-import { GetUser } from '../auth/get-user.decorator';
+import { GetUser } from '../decorators/get-user.decorator';
+import { UseGuards } from '@nestjs/common';
+import { RightGuard } from '../guards/right.guard';
 
 @Resolver(() => Country)
 export class CountryResolver {
@@ -25,7 +27,9 @@ export class CountryResolver {
   }
 
   @Query(() => [Country])
-  countries(@GetUser() user: any) {
+  @UseGuards(RightGuard)
+  //countries(@GetUser() user: any) {
+  countries() {
     return this.countryService.findAll();
   }
 
