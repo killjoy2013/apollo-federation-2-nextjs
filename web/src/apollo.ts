@@ -1,4 +1,3 @@
-import { getToken } from 'next-auth/jwt';
 import {
   ApolloClient,
   ApolloLink,
@@ -6,12 +5,11 @@ import {
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
-import getConfig from 'next/config';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
+import getConfig from 'next/config';
 import { useMemo } from 'react';
 import { alertMessageVar, cache } from './cache';
-import { getSession } from 'next-auth/react';
 
 const { publicRuntimeConfig, serverRuntimeConfig } = getConfig();
 let apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -30,7 +28,7 @@ export function initializeApollo(initialState: InitialState = null) {
       arrayMerge: (destinationArray, sourceArray) => [
         ...sourceArray,
         ...destinationArray.filter((d) =>
-          sourceArray.every((s) => !isEqual(d, s))
+          sourceArray.every((s) => !isEqual(d, s)),
         ),
       ],
     });
@@ -50,14 +48,15 @@ const customFetch = async (uri: any, options: any) => {
 };
 
 function createIsomorphicLink() {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { HttpLink } = require('@apollo/client/link/http');
 
-  let uri =
+  const uri =
     typeof window === 'undefined'
       ? serverRuntimeConfig.graphqlUrlSsr
       : publicRuntimeConfig.graphqlUrlClient;
 
-  let httpLink = new HttpLink({
+  const httpLink = new HttpLink({
     uri,
     fetch: customFetch,
     fetchOptions: {
@@ -68,9 +67,9 @@ function createIsomorphicLink() {
   return httpLink;
 }
 
-const errorLink = onError(({ graphQLErrors, operation }) => {
+const errorLink = onError(({ graphQLErrors }) => {
   if (graphQLErrors) {
-    let wholeMessage = graphQLErrors.map((m) => m.message).join(' - ');
+    const wholeMessage = graphQLErrors.map((m) => m.message).join(' - ');
     alertMessageVar({ severity: 'error', message: wholeMessage });
   }
 });

@@ -1,5 +1,5 @@
-import { NormalizedCache } from "@apollo/client";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { NormalizedCache } from '@apollo/client';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   IconButton,
   Table,
@@ -7,26 +7,18 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from "@mui/material";
-import MyAlert from "components/alert";
-import { GetServerSidePropsContext } from "next";
-import {
-  unstable_getServerSession as getServerSession,
-  Session,
-} from "next-auth";
-import { getSession, useSession } from "next-auth/react";
-import { getToken } from "next-auth/jwt";
-import React, { FC, useEffect } from "react";
-import { initializeApollo } from "src/apollo";
-import { alertMessageVar } from "src/cache";
-import { Queries } from "src/gql_definitions/queries";
-import {
-  CitiesQuery,
-  useCitiesQuery,
-  useRemoveCityMutation,
-} from "src/graphql/types";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { createTempToken } from "helpers/AuthHelper";
+} from '@mui/material';
+import MyAlert from 'components/alert';
+import { GetServerSidePropsContext } from 'next';
+import { unstable_getServerSession as getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import React, { FC, useEffect } from 'react';
+import { initializeApollo } from 'src/apollo';
+import { alertMessageVar } from 'src/cache';
+import { Queries } from 'src/gql_definitions/queries';
+import { useCitiesQuery, useRemoveCityMutation } from 'src/graphql/types';
+import { authOptions } from './api/auth/[...nextauth]';
+import { createTempToken } from 'helpers/AuthHelper';
 
 type CitiesType = {
   initialApolloState: NormalizedCache;
@@ -97,7 +89,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   if (!session) {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permenant: false,
       },
     };
@@ -119,10 +111,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         cookie,
       },
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: 'network-only',
   });
 
-  let normCache = apolloClient.cache.extract();
+  const normCache = apolloClient.cache.extract();
 
   return {
     props: {

@@ -6,27 +6,27 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import MyAlert from "components/alert";
-import { GetServerSidePropsContext } from "next";
-import { unstable_getServerSession as getServerSession } from "next-auth";
-import { FC, useEffect, useState } from "react";
-import { alertMessageVar } from "src/cache";
+} from '@mui/material';
+import MyAlert from 'components/alert';
+import { GetServerSidePropsContext } from 'next';
+import { unstable_getServerSession as getServerSession } from 'next-auth';
+import { FC, useEffect, useState } from 'react';
+import { alertMessageVar } from 'src/cache';
 import {
   Continent,
   CreateCountryInput,
   useCreateCountryMutation,
-} from "src/graphql/types";
-import { authOptions } from "./api/auth/[...nextauth]";
+} from 'src/graphql/types';
+import { authOptions } from './api/auth/[...nextauth]';
 
 type AddCountryType = {
   alertMessage: string;
 };
 
-const AddCountry: FC<AddCountryType> = (props) => {
-  const { alertMessage } = props;
+// eslint-disable-next-line unused-imports/no-unused-vars
+const AddCountry: FC<AddCountryType> = ({ alertMessage }) => {
   const [countryData, setCountryData] = useState<CreateCountryInput>({
-    name: "",
+    name: '',
     population: undefined,
     continent: Continent.Asia,
   });
@@ -36,9 +36,9 @@ const AddCountry: FC<AddCountryType> = (props) => {
   console.log({ error });
 
   useEffect(() => {
-    data && alertMessageVar({ severity: "success", message: "success" });
-    loading && alertMessageVar({ severity: "info", message: "progress..." });
-    error && alertMessageVar({ severity: "error", message: "error :-(" });
+    data && alertMessageVar({ severity: 'success', message: 'success' });
+    loading && alertMessageVar({ severity: 'info', message: 'progress...' });
+    error && alertMessageVar({ severity: 'error', message: 'error :-(' });
   }, [data, loading, error]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const AddCountry: FC<AddCountryType> = (props) => {
   return (
     <>
       <h1>Add Country</h1>
-      <Grid container direction="column" spacing={2} sx={{ width: "500px" }}>
+      <Grid container direction="column" spacing={2} sx={{ width: '500px' }}>
         <Grid item>
           <TextField
             label="Country name"
@@ -63,7 +63,7 @@ const AddCountry: FC<AddCountryType> = (props) => {
             label="Population"
             value={countryData.population}
             onChange={(e) => {
-              let population = e.target.value
+              const population = e.target.value
                 ? Number(e.target.value)
                 : undefined;
 
@@ -97,7 +97,7 @@ const AddCountry: FC<AddCountryType> = (props) => {
                       {key}
                     </MenuItem>
                   );
-                }
+                },
               )}
             </Select>
           </FormControl>
@@ -125,13 +125,12 @@ const AddCountry: FC<AddCountryType> = (props) => {
 };
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const { req } = ctx;
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
   if (!session) {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permenant: false,
       },
     };

@@ -1,10 +1,12 @@
 import React from 'react';
-import Alert, { AlertColor } from '@mui/material/Alert';
+import Alert from '@mui/material/Alert';
 import { FC } from 'react';
 import { useReactiveVar } from '@apollo/client';
 import { alertMessageVar } from 'src/cache';
 
-type MyAlertType = {};
+type MyAlertType = {
+  dumm?: string;
+};
 
 const MyAlert: FC<MyAlertType> = (props) => {
   const alertMessage = useReactiveVar(alertMessageVar);

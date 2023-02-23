@@ -6,27 +6,24 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import MyAlert from "components/alert";
-import { getToken } from "next-auth/jwt";
-import React, { FC, useEffect, useState } from "react";
-import { initializeApollo } from "src/apollo";
-import { alertMessageVar } from "src/cache";
-import { Queries } from "src/gql_definitions/queries";
-import { GetServerSidePropsContext } from "next";
+} from '@mui/material';
+import MyAlert from 'components/alert';
+import React, { FC, useEffect, useState } from 'react';
+import { initializeApollo } from 'src/apollo';
+import { alertMessageVar } from 'src/cache';
+import { Queries } from 'src/gql_definitions/queries';
+import { GetServerSidePropsContext } from 'next';
 import {
   CountriesQuery,
-  Country,
   CreateCityInput,
   useCountriesQuery,
   useCreateCityMutation,
-} from "src/graphql/types";
-import { useSession, getSession } from "next-auth/react";
-import { method } from "lodash";
-import { NormalizedCache } from "@apollo/client";
-import { createTempToken } from "helpers/AuthHelper";
-import { unstable_getServerSession as getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
+} from 'src/graphql/types';
+import { useSession } from 'next-auth/react';
+import { NormalizedCache } from '@apollo/client';
+import { createTempToken } from 'helpers/AuthHelper';
+import { unstable_getServerSession as getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 
 type AddCityType = {
   initialApolloState: NormalizedCache;
@@ -51,7 +48,7 @@ const AddCity: FC<AddCityType> = (props) => {
   ] = useCreateCityMutation();
 
   const [cityData, setCityData] = useState<CreateCityInput>({
-    name: "",
+    name: '',
     population: undefined,
     countryId: 0,
   });
@@ -66,11 +63,11 @@ const AddCity: FC<AddCityType> = (props) => {
 
   useEffect(() => {
     createCityData &&
-      alertMessageVar({ severity: "success", message: "success" });
+      alertMessageVar({ severity: 'success', message: 'success' });
     createCityLoading &&
-      alertMessageVar({ severity: "info", message: "progress..." });
+      alertMessageVar({ severity: 'info', message: 'progress...' });
     createCityError &&
-      alertMessageVar({ severity: "error", message: "error :-(" });
+      alertMessageVar({ severity: 'error', message: 'error :-(' });
   }, [createCityData, createCityLoading, createCityError]);
 
   useEffect(() => {
@@ -80,7 +77,7 @@ const AddCity: FC<AddCityType> = (props) => {
   return (
     <>
       <h1>Add City</h1>
-      <Grid container direction="column" spacing={2} sx={{ width: "500px" }}>
+      <Grid container direction="column" spacing={2} sx={{ width: '500px' }}>
         <Grid item>
           <TextField
             label="City name"
@@ -93,7 +90,7 @@ const AddCity: FC<AddCityType> = (props) => {
             label="Population"
             value={cityData.population}
             onChange={(e) => {
-              let population = e.target.value
+              const population = e.target.value
                 ? Number(e.target.value)
                 : undefined;
 
@@ -147,7 +144,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   if (!session) {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permenant: false,
       },
     };
@@ -165,10 +162,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         cookie,
       },
     },
-    fetchPolicy: "network-only",
+    fetchPolicy: 'network-only',
   });
 
-  let normCache = apolloClient.cache.extract();
+  const normCache = apolloClient.cache.extract();
 
   return {
     props: {

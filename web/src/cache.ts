@@ -7,7 +7,7 @@ export const cache: InMemoryCache = new InMemoryCache({
     Query: {
       fields: {
         countries: {
-          read: (countries: Country[], { canRead, toReference }) => {
+          read: (countries: Country[], { canRead }) => {
             if (countries) {
               return countries.filter((country) => {
                 return canRead(country);
@@ -21,7 +21,7 @@ export const cache: InMemoryCache = new InMemoryCache({
           },
         },
         cities: {
-          read: (cities: City[], { canRead, toReference }) => {
+          read: (cities: City[], { canRead }) => {
             if (cities) {
               return cities.filter((city) => {
                 return canRead(city);

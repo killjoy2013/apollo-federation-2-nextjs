@@ -1,12 +1,12 @@
-import { prisma } from "db/prisma";
-import jsonwebtoken from "jsonwebtoken";
-import NextAuth, { NextAuthOptions } from "next-auth";
-import { JWT, JWTDecodeParams, JWTEncodeParams } from "next-auth/jwt";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { signOut } from "next-auth/react";
+import { prisma } from 'db/prisma';
+import jsonwebtoken from 'jsonwebtoken';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import { JWT, JWTDecodeParams, JWTEncodeParams } from 'next-auth/jwt';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { signOut } from 'next-auth/react';
 
 async function getRights(username: string): Promise<string[]> {
-  let founduser = await prisma.user.findFirst({
+  const founduser = await prisma.user.findFirst({
     where: {
       username,
     },
@@ -39,7 +39,7 @@ async function getRights(username: string): Promise<string[]> {
 }
 
 async function authAndCreateToken(username: string, password: string) {
-  let rights = await authenticate(username, password);
+  const rights = await authenticate(username, password);
 
   const token = {
     username: username,
@@ -48,9 +48,9 @@ async function authAndCreateToken(username: string, password: string) {
       Date.now() + parseInt(process.env.TOKEN_REFRESH_PERIOD) * 1000,
   };
 
-  let refreshToken = jsonwebtoken.sign(token, process.env.TOKEN_SECRET, {
+  const refreshToken = jsonwebtoken.sign(token, process.env.TOKEN_SECRET, {
     expiresIn: parseInt(process.env.TOKEN_MAX_AGE),
-    algorithm: "HS512",
+    algorithm: 'HS512',
   });
 
   await prisma.user.update({
@@ -67,7 +67,7 @@ async function authAndCreateToken(username: string, password: string) {
 
 async function validate(username: string, password: string): Promise<boolean> {
   if (username && password) {
-    let foundUser = await prisma.user.findFirst({
+    const foundUser = await prisma.user.findFirst({
       where: {
         username,
       },
@@ -76,7 +76,7 @@ async function validate(username: string, password: string): Promise<boolean> {
     if (foundUser) {
       return true;
     } else {
-      throw new Error("username not found");
+      throw new Error('username not found');
     }
   } else {
     return false;
@@ -99,14 +99,14 @@ async function authenticate(username: string, password: string) {
 
 async function refreshToken(oldToken: JWT): Promise<any> {
   return new Promise(async (resolve, reject) => {
-    let username = oldToken.username as string;
+    const username = oldToken.username as string;
 
     console.log(
-      `${username} token will refresh on ${new Date().toLocaleTimeString()}`
+      `${username} token will refresh on ${new Date().toLocaleTimeString()}`,
     );
 
     try {
-      let user = await prisma.user.findFirst({
+      const user = await prisma.user.findFirst({
         where: {
           username,
         },
@@ -117,14 +117,12 @@ async function refreshToken(oldToken: JWT): Promise<any> {
         reject(`${username} not found or refresh token is empty!`);
       }
 
-      const verified = jsonwebtoken.verify(
-        user.refreshToken,
-        process.env.TOKEN_SECRET
-      ) as JWT;
+      jsonwebtoken.verify(user.refreshToken, process.env.TOKEN_SECRET) as JWT;
 
+      // eslint-disable-next-line unused-imports/no-unused-vars
       const { iat, exp, ...others } = oldToken;
 
-      let rights = await getRights(user.username);
+      const rights = await getRights(user.username);
 
       const newToken = {
         ...others,
@@ -138,8 +136,8 @@ async function refreshToken(oldToken: JWT): Promise<any> {
         process.env.TOKEN_SECRET,
         {
           expiresIn: parseInt(process.env.TOKEN_MAX_AGE),
-          algorithm: "HS512",
-        }
+          algorithm: 'HS512',
+        },
       );
 
       await prisma.user.update({
@@ -165,22 +163,23 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.TOKEN_SECRET,
     encode: async (params: JWTEncodeParams): Promise<string> => {
       const { secret, token } = params;
-      let encodedToken = "";
+      let encodedToken = '';
       if (token) {
+        // eslint-disable-next-line unused-imports/no-unused-vars
         const { exp, iat, ...rest } = token;
 
         encodedToken = jsonwebtoken.sign(rest, secret, {
           expiresIn: parseInt(process.env.TOKEN_REFRESH_PERIOD),
-          algorithm: "HS512",
+          algorithm: 'HS512',
         });
       } else {
-        console.log("TOKEN EMPTY. SO, LOGOUT!...");
-        return "";
+        console.log('TOKEN EMPTY. SO, LOGOUT!...');
+        return '';
       }
       return encodedToken;
     },
     decode: async (params: JWTDecodeParams) => {
-      const { token, secret } = params;
+      const { token } = params;
       const decoded = jsonwebtoken.decode(token);
 
       return { ...(decoded as JWT) };
@@ -189,7 +188,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     maxAge: parseInt(process.env.TOKEN_MAX_AGE),
     updateAge: 0,
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   callbacks: {
     async session({ session, token }) {
@@ -204,49 +203,42 @@ export const authOptions: NextAuthOptions = {
         return { ...user };
       }
 
-      let left = ((token.accessTokenExpires as number) - Date.now()) / 1000;
-      // console.log({
-      //   now: Date.now(),
-      //   accessTokenExpires: token.accessTokenExpires,
-      //   left,
-      // });
+      const left = ((token.accessTokenExpires as number) - Date.now()) / 1000;
 
       if (left > 0) {
         return token;
       } else {
-        let newToken = await refreshToken(token);
-        // console.log(`refreshed token on ${new Date().toLocaleTimeString()}`, {
-        //   newToken,
-        // });
+        const newToken = await refreshToken(token);
+
         return newToken;
       }
     },
   },
   providers: [
     CredentialsProvider({
-      name: "ORDINARY_JWT",
+      name: 'ORDINARY_JWT',
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         const { username, password } = credentials;
 
         if (!username || !password) {
-          throw new Error("enter username or password");
+          throw new Error('enter username or password');
         }
         try {
-          let token = await authAndCreateToken(username, password);
+          const token = await authAndCreateToken(username, password);
           return token;
         } catch (error) {
           console.log(error);
-          throw new Error("Authentication error");
+          throw new Error('Authentication error');
         }
       },
     }),
   ],
   events: {
-    async signOut({ session, token }) {
+    async signOut({ token }) {
       await prisma.user.update({
         where: {
           username: token.username as string,
