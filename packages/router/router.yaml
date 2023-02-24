@@ -3,7 +3,9 @@ headers:
     request:
       - propagate:
           matching: .*
-
+# Do not enable introspection in production!
+supergraph:
+  introspection: true
 authentication:
   experimental:
     jwt:
@@ -12,11 +14,7 @@ authentication:
       header_name: Authorization
       header_value_prefix: Bearer
       cooldown: 15s
-# headers:
-#   all:
-#     request:
-#       - propagate:
-#           named: 'Authorization'
+
 include_subgraph_errors:
   all: true # Propagate errors from all subgraphs
 cors:
@@ -24,5 +22,5 @@ cors:
     - http://localhost:4000 # Allows any locally-running client to run against your Router
     - https://studio.apollographql.com # Allows Apollo Studio to still run queries against your Router
 
-rhai:
-  main: 'main.rhai'
+# rhai:
+#   main: 'main.rhai'

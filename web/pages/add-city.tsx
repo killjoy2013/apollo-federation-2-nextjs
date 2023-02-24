@@ -11,10 +11,8 @@ import MyAlert from 'components/alert';
 import React, { FC, useEffect, useState } from 'react';
 import { initializeApollo } from 'src/apollo';
 import { alertMessageVar } from 'src/cache';
-import { Queries } from 'src/gql_definitions/queries';
 import { GetServerSidePropsContext } from 'next';
 import {
-  CountriesQuery,
   CreateCityInput,
   useCountriesQuery,
   useCreateCityMutation,
@@ -22,7 +20,7 @@ import {
 import { useSession } from 'next-auth/react';
 import { NormalizedCache } from '@apollo/client';
 import { createTempToken } from 'helpers/AuthHelper';
-import { unstable_getServerSession as getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 
 type AddCityType = {
@@ -141,6 +139,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const { req } = ctx;
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
+  console.log('getServerSession', session);
+
   if (!session) {
     return {
       redirect: {
@@ -150,20 +150,23 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
   }
 
-  const { username, rights, accessTokenExpires } = session;
-  const token = createTempToken({ username, rights, accessTokenExpires });
-  const cookie = `next-auth.session-token=${token}`;
+  const { username, rights, exp } = session as unknown as any;
+  const token = createTempToken({ username, rights, exp });
+
+  console.log('CREATED TEMP TOKEN', token);
+
+  //const cookie = `next-auth.session-token=${token}`;
 
   const apolloClient = initializeApollo();
-  await apolloClient.query<CountriesQuery>({
-    query: Queries.COUNTRIES,
-    context: {
-      headers: {
-        cookie,
-      },
-    },
-    fetchPolicy: 'network-only',
-  });
+  // await apolloClient.query<CountriesQuery>({
+  //   query: Queries.COUNTRIES,
+  //   context: {
+  //     headers: {
+  //       cookie,
+  //     },
+  //   },
+  //   fetchPolicy: 'network-only',
+  // });
 
   const normCache = apolloClient.cache.extract();
 
