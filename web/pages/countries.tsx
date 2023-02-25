@@ -9,19 +9,14 @@ import {
   TableRow,
 } from '@mui/material';
 import MyAlert from 'components/alert';
-import { createTempToken } from 'helpers/AuthHelper';
 import { GetServerSidePropsContext } from 'next';
-import { unstable_getServerSession as getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
+
 import { useSession } from 'next-auth/react';
 import { FC, useCallback, useEffect } from 'react';
 import { initializeApollo } from 'src/apollo';
 import { alertMessageVar } from 'src/cache';
-import { Queries } from 'src/gql_definitions/queries';
-import {
-  CountriesQuery,
-  useCountriesQuery,
-  useRemoveCountryMutation,
-} from 'src/graphql/types';
+import { useCountriesQuery, useRemoveCountryMutation } from 'src/graphql/types';
 import { authOptions } from './api/auth/[...nextauth]';
 
 type CountriesType = {
@@ -121,27 +116,27 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
   }
 
-  const { username, rights, accessTokenExpires } = session;
-  const token = createTempToken({ username, rights, accessTokenExpires });
-  const cookie = `next-auth.session-token=${token}`;
+  // const { username, rights, accessTokenExpires } = session;
+  // const token = createTempToken({ username, rights, accessTokenExpires });
+  // const cookie = `next-auth.session-token=${token}`;
 
   const apolloClient = initializeApollo();
-  await apolloClient.query<CountriesQuery>({
-    query: Queries.COUNTRIES,
-    context: {
-      headers: {
-        cookie,
-      },
-    },
-    fetchPolicy: 'network-only',
-  });
+  // await apolloClient.query<CountriesQuery>({
+  //   query: Queries.COUNTRIES,
+  //   context: {
+  //     headers: {
+  //       cookie,
+  //     },
+  //   },
+  //   fetchPolicy: 'network-only',
+  // });
 
   const normCache = apolloClient.cache.extract();
 
   return {
     props: {
       initialApolloState: normCache,
-      rights,
+      //rights,
     },
   };
 }

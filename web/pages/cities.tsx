@@ -10,15 +10,14 @@ import {
 } from '@mui/material';
 import MyAlert from 'components/alert';
 import { GetServerSidePropsContext } from 'next';
-import { unstable_getServerSession as getServerSession } from 'next-auth';
+
 import { useSession } from 'next-auth/react';
 import React, { FC, useEffect } from 'react';
 import { initializeApollo } from 'src/apollo';
 import { alertMessageVar } from 'src/cache';
-import { Queries } from 'src/gql_definitions/queries';
 import { useCitiesQuery, useRemoveCityMutation } from 'src/graphql/types';
 import { authOptions } from './api/auth/[...nextauth]';
-import { createTempToken } from 'helpers/AuthHelper';
+import { getServerSession } from 'next-auth';
 
 type CitiesType = {
   initialApolloState: NormalizedCache;
@@ -95,24 +94,24 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
   }
 
-  const { username, rights, accessTokenExpires } = session;
-  const token = createTempToken({ username, rights, accessTokenExpires });
-  const cookie = `next-auth.session-token=${token}`;
+  // const { username, rights, accessTokenExpires } = session;
+  // const token = createTempToken({ username, rights, accessTokenExpires });
+  // const cookie = `next-auth.session-token=${token}`;
 
   // console.log(`sessionToken cities on ${new Date().toLocaleTimeString()}`, {
   //   token,
   // });
 
   const apolloClient = initializeApollo();
-  await apolloClient.query({
-    query: Queries.CITIES,
-    context: {
-      headers: {
-        cookie,
-      },
-    },
-    fetchPolicy: 'network-only',
-  });
+  // await apolloClient.query({
+  //   query: Queries.CITIES,
+  //   context: {
+  //     headers: {
+  //       cookie,
+  //     },
+  //   },
+  //   fetchPolicy: 'network-only',
+  // });
 
   const normCache = apolloClient.cache.extract();
 

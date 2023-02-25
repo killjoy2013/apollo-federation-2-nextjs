@@ -20,8 +20,8 @@ import {
 import { useSession } from 'next-auth/react';
 import { NormalizedCache } from '@apollo/client';
 import { createTempToken } from 'helpers/AuthHelper';
-import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth/next';
 
 type AddCityType = {
   initialApolloState: NormalizedCache;
@@ -152,8 +152,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
   const { username, rights, exp } = session as unknown as any;
   const token = createTempToken({ username, rights, exp });
-
-  console.log('CREATED TEMP TOKEN', token);
 
   //const cookie = `next-auth.session-token=${token}`;
 

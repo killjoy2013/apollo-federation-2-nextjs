@@ -1,5 +1,6 @@
 import AuthForm from 'components/auth/auth-form';
-import { unstable_getServerSession as getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
+
 import { authOptions } from './api/auth/[...nextauth]';
 
 const Login = () => {

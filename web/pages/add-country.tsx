@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import MyAlert from 'components/alert';
 import { GetServerSidePropsContext } from 'next';
-import { unstable_getServerSession as getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
+
 import { FC, useEffect, useState } from 'react';
 import { alertMessageVar } from 'src/cache';
 import {
