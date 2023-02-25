@@ -1,4 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
+import { JWT } from 'next-auth/jwt';
 
 const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIIG4wIBAAKCAYEAr/kIbUEgL9OQImLd+OYzlm/F6iUt0fyNlrf4ciGusahtKTAM
@@ -40,17 +41,10 @@ A/mEqi381KTl7ALkSVPsfhgm9lmlAE2E/RO2bAxIZ/LRgJxb8LrOj77Ljzqy7axD
 buYmYCBpcvhUD2+i4VGRclu5+sx+xsR37zsn/WaYiDALqEtodgdZ
 -----END RSA PRIVATE KEY-----`;
 
-export function createTempToken({
-  username,
-  rights,
-  exp,
-}: {
-  username: string;
-  rights: Array<string>;
-  exp: number;
-}) {
-  return jsonwebtoken.sign({ username, rights }, privateKey, {
+export function encodeToken(payload: JWT) {
+  const { exp } = payload;
+
+  return jsonwebtoken.sign(payload, privateKey, {
     algorithm: 'RS256',
-    expiresIn: exp,
   });
 }

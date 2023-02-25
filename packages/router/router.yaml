@@ -22,5 +22,5 @@ cors:
     - http://localhost:4000 # Allows any locally-running client to run against your Router
     - https://studio.apollographql.com # Allows Apollo Studio to still run queries against your Router
 
-# rhai:
-#   main: 'main.rhai'
+rhai:
+  main: 'main.rhai'

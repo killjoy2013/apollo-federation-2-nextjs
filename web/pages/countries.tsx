@@ -11,12 +11,18 @@ import {
 import MyAlert from 'components/alert';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
+import { getToken } from 'next-auth/jwt';
 
 import { useSession } from 'next-auth/react';
 import { FC, useCallback, useEffect } from 'react';
 import { initializeApollo } from 'src/apollo';
 import { alertMessageVar } from 'src/cache';
-import { useCountriesQuery, useRemoveCountryMutation } from 'src/graphql/types';
+import { Queries } from 'src/gql_definitions/queries';
+import {
+  CountriesQuery,
+  useCountriesQuery,
+  useRemoveCountryMutation,
+} from 'src/graphql/types';
 import { authOptions } from './api/auth/[...nextauth]';
 
 type CountriesType = {
@@ -31,6 +37,8 @@ const Countries: FC<CountriesType> = (props) => {
   const { data, loading, error } = useCountriesQuery();
   // eslint-disable-next-line unused-imports/no-unused-vars
   const { data: session, status } = useSession();
+
+  console.log('COUNTRIES CLIENT SESSION', { status });
 
   const [removeCountry] = useRemoveCountryMutation({
     update(cache, { data: { removeCountry: removedId } }) {
@@ -105,6 +113,7 @@ const Countries: FC<CountriesType> = (props) => {
 };
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { req } = ctx;
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
   if (!session) {
@@ -116,27 +125,28 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
   }
 
-  // const { username, rights, accessTokenExpires } = session;
-  // const token = createTempToken({ username, rights, accessTokenExpires });
-  // const cookie = `next-auth.session-token=${token}`;
+  const token = await getToken({
+    req,
+    raw: true,
+  });
 
   const apolloClient = initializeApollo();
-  // await apolloClient.query<CountriesQuery>({
-  //   query: Queries.COUNTRIES,
-  //   context: {
-  //     headers: {
-  //       cookie,
-  //     },
-  //   },
-  //   fetchPolicy: 'network-only',
-  // });
+  await apolloClient.query<CountriesQuery>({
+    query: Queries.COUNTRIES,
+    context: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    fetchPolicy: 'network-only',
+  });
 
   const normCache = apolloClient.cache.extract();
 
   return {
     props: {
       initialApolloState: normCache,
-      //rights,
+      rights: session.user?.rights,
     },
   };
 }
