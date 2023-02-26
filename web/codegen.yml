@@ -1,4 +1,4 @@
-schema: ../gateway/prod-schema.graphql
+schema: ../packages/router/supergraph-schema.graphql
 
 documents:
   - ./src/gql_definitions/queries.ts
@@ -8,7 +8,7 @@ generates:
   ./src/graphql/types.tsx:
     plugins:
       - add:
-          content: "/* eslint-disable */"
+          content: '/* eslint-disable */'
       - typescript
       - typescript-operations
       - typescript-react-apollo
@@ -22,4 +22,4 @@ generates:
       withHooks: true
       withComponent: false
       namingConvention:
-        enumValues: "change-case-all#pascalCase"
+        enumValues: 'change-case-all#pascalCase'
