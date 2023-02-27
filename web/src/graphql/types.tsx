@@ -3,11 +3,12 @@ import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from '
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
-const defaultOptions =  {}
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -20,72 +21,63 @@ export type Scalars = {
   _FieldSet: any;
 };
 
-
-
-
-
-
-
-
-
-
 export type Address = {
   __typename?: 'Address';
-  id: Scalars['Int'];
-  detail: Scalars['String'];
-  personId: Scalars['Int'];
   city: City;
+  detail: Scalars['String'];
+  id: Scalars['Int'];
+  personId: Scalars['Int'];
 };
 
 export type City = {
   __typename?: 'City';
   id: Scalars['Int'];
   name: Scalars['String'];
-  touristic?: Maybe<Scalars['Boolean']>;
+  persons?: Maybe<Array<Person>>;
   population?: Maybe<Scalars['Int']>;
   restaurants?: Maybe<Array<Restaurant>>;
-  persons?: Maybe<Array<Person>>;
+  touristic?: Maybe<Scalars['Boolean']>;
 };
 
 export enum Continent {
-  Asia = 'Asia',
-  Europe = 'Europe',
+  Africa = 'Africa',
   America = 'America',
-  Africa = 'Africa'
+  Asia = 'Asia',
+  Europe = 'Europe'
 }
 
 export type Country = {
   __typename?: 'Country';
+  capital: City;
+  cities?: Maybe<Array<City>>;
+  continent?: Maybe<Continent>;
   id: Scalars['Int'];
   name: Scalars['String'];
   population?: Maybe<Scalars['Int']>;
-  cities?: Maybe<Array<City>>;
   treaties?: Maybe<Array<Treaty>>;
-  capital: City;
-  continent?: Maybe<Continent>;
 };
 
 export type CreateAddressInput = {
-  detail: Scalars['String'];
   cityId: Scalars['Int'];
+  detail: Scalars['String'];
 };
 
 export type CreateCityInput = {
-  name: Scalars['String'];
-  population?: Maybe<Scalars['Int']>;
   countryId: Scalars['Int'];
+  name: Scalars['String'];
+  population?: InputMaybe<Scalars['Int']>;
 };
 
 export type CreateCountryInput = {
+  continent?: InputMaybe<Continent>;
   name: Scalars['String'];
-  population?: Maybe<Scalars['Int']>;
-  continent?: Maybe<Continent>;
+  population?: InputMaybe<Scalars['Int']>;
 };
 
 export type CreateHobbyInput = {
-  name: Scalars['String'];
-  difficulty: Difficulty;
   cityId: Scalars['Int'];
+  difficulty: Difficulty;
+  name: Scalars['String'];
 };
 
 export type CreateMealInput = {
@@ -93,26 +85,26 @@ export type CreateMealInput = {
 };
 
 export type CreatePersonInput = {
+  address: CreateAddressInput;
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   occupation: Scalars['String'];
-  address: CreateAddressInput;
 };
 
 export type CreateRestaurantInput = {
+  cityId: Scalars['Int'];
   name: Scalars['String'];
   priceRange: PriceRange;
-  cityId: Scalars['Int'];
 };
 
 export type CreateRightInput = {
+  description?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
 };
 
 export type CreateRoleInput = {
+  description?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
 };
 
 export type CreateTreatyInput = {
@@ -120,34 +112,23 @@ export type CreateTreatyInput = {
 };
 
 export type CreateUserInput = {
-  userName: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
+  userName: Scalars['String'];
 };
 
 export enum Difficulty {
+  Difficult = 'Difficult',
   Easy = 'Easy',
-  Moderate = 'Moderate',
-  Difficult = 'Difficult'
+  Moderate = 'Moderate'
 }
 
 export type Hobby = {
   __typename?: 'Hobby';
+  difficulty?: Maybe<Difficulty>;
   id: Scalars['Int'];
   name: Scalars['String'];
-  difficulty?: Maybe<Difficulty>;
   persons?: Maybe<Array<Person>>;
-};
-
-export type LoginResponse = {
-  __typename?: 'LoginResponse';
-  access_token: Scalars['String'];
-  rights?: Maybe<Array<Scalars['String']>>;
-};
-
-export type LoginUserInput = {
-  username: Scalars['String'];
-  password: Scalars['String'];
 };
 
 export type Meal = {
@@ -159,119 +140,42 @@ export type Meal = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createRole: Role;
-  updateRole: Role;
-  removeRole: Scalars['Int'];
-  assignRoleToUser: Scalars['String'];
-  revokeRoleFromUser: Scalars['String'];
-  revokeAllRolesFromUser: Scalars['String'];
-  createRight: Right;
-  updateRight: Right;
-  removeRight: Scalars['Int'];
-  assignRightToRole: Scalars['String'];
-  revokeRightFromRole: Scalars['String'];
-  login: LoginResponse;
-  createUser: User;
-  updateUser: User;
-  removeUser: Scalars['Int'];
-  createCountry: Country;
-  updateCountry: Country;
-  removeCountry?: Maybe<Scalars['Int']>;
   addCountryToTreaty: Country;
-  removeCountryFromTreaty: Country;
+  assignRightToRole: Scalars['String'];
+  assignRoleToUser: Scalars['String'];
   createCity: City;
-  updateCity: City;
-  removeCity?: Maybe<Scalars['Int']>;
-  createTreaty: Treaty;
-  updateTreaty: Treaty;
-  removeTreaty: Treaty;
-  createRestaurant: Restaurant;
-  updateRestaurant: Restaurant;
-  removeRestaurant?: Maybe<Scalars['Int']>;
-  createMeal: Meal;
-  updateMeal: Meal;
-  removeMeal?: Maybe<Scalars['Int']>;
+  createCountry: Country;
   createHobby: Hobby;
-  removeHobby?: Maybe<Scalars['Int']>;
+  createMeal: Meal;
   createPerson: Person;
+  createRestaurant: Restaurant;
+  createRight: Right;
+  createRole: Role;
+  createTreaty: Treaty;
+  createUser: User;
+  removeCity?: Maybe<Scalars['Int']>;
+  removeCountry?: Maybe<Scalars['Int']>;
+  removeCountryFromTreaty: Country;
+  removeHobby?: Maybe<Scalars['Int']>;
+  removeMeal?: Maybe<Scalars['Int']>;
   removePerson?: Maybe<Scalars['Int']>;
-};
-
-
-export type MutationCreateRoleArgs = {
-  createRoleInput: CreateRoleInput;
-};
-
-
-export type MutationUpdateRoleArgs = {
-  updateRoleInput: UpdateRoleInput;
-};
-
-
-export type MutationRemoveRoleArgs = {
-  id: Scalars['Float'];
-};
-
-
-export type MutationCreateRightArgs = {
-  createRightInput: CreateRightInput;
-};
-
-
-export type MutationUpdateRightArgs = {
-  updateRightInput: UpdateRightInput;
-};
-
-
-export type MutationRemoveRightArgs = {
-  id: Scalars['Float'];
-};
-
-
-export type MutationAssignRightToRoleArgs = {
-  rightName: Scalars['String'];
-  roleName: Scalars['String'];
-};
-
-
-export type MutationRevokeRightFromRoleArgs = {
-  rightName: Scalars['String'];
-  roleName: Scalars['String'];
-};
-
-
-export type MutationLoginArgs = {
-  loginUserInput: LoginUserInput;
-};
-
-
-export type MutationCreateUserArgs = {
-  createUserInput: CreateUserInput;
-};
-
-
-export type MutationUpdateUserArgs = {
-  updateUserInput: UpdateUserInput;
-};
-
-
-export type MutationRemoveUserArgs = {
-  id: Scalars['Float'];
-};
-
-
-export type MutationCreateCountryArgs = {
-  input: CreateCountryInput;
-};
-
-
-export type MutationUpdateCountryArgs = {
-  input: UpdateCountryInput;
-};
-
-
-export type MutationRemoveCountryArgs = {
-  id: Scalars['Int'];
+  removeRestaurant?: Maybe<Scalars['Int']>;
+  removeRight: Scalars['Int'];
+  removeRole: Scalars['Int'];
+  removeTreaty: Treaty;
+  removeUser: Scalars['Int'];
+  restaurantUpdatedEvent?: Maybe<Scalars['Int']>;
+  revokeAllRolesFromUser: Scalars['String'];
+  revokeRightFromRole: Scalars['String'];
+  revokeRoleFromUser: Scalars['String'];
+  updateCity: City;
+  updateCountry: Country;
+  updateMeal: Meal;
+  updateRestaurant: Restaurant;
+  updateRight: Right;
+  updateRole: Role;
+  updateTreaty: Treaty;
+  updateUser: User;
 };
 
 
@@ -281,9 +185,9 @@ export type MutationAddCountryToTreatyArgs = {
 };
 
 
-export type MutationRemoveCountryFromTreatyArgs = {
-  countryId: Scalars['Int'];
-  treatyId: Scalars['Int'];
+export type MutationAssignRightToRoleArgs = {
+  rightName: Scalars['String'];
+  roleName: Scalars['String'];
 };
 
 
@@ -292,58 +196,8 @@ export type MutationCreateCityArgs = {
 };
 
 
-export type MutationUpdateCityArgs = {
-  input: UpdateCityInput;
-};
-
-
-export type MutationRemoveCityArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationCreateTreatyArgs = {
-  input: CreateTreatyInput;
-};
-
-
-export type MutationUpdateTreatyArgs = {
-  input: UpdateTreatyInput;
-};
-
-
-export type MutationRemoveTreatyArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationCreateRestaurantArgs = {
-  input: CreateRestaurantInput;
-};
-
-
-export type MutationUpdateRestaurantArgs = {
-  input: UpdateRestaurantInput;
-};
-
-
-export type MutationRemoveRestaurantArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type MutationCreateMealArgs = {
-  input: CreateMealInput;
-};
-
-
-export type MutationUpdateMealArgs = {
-  input: UpdateMealInput;
-};
-
-
-export type MutationRemoveMealArgs = {
-  id: Scalars['Int'];
+export type MutationCreateCountryArgs = {
+  input: CreateCountryInput;
 };
 
 
@@ -352,8 +206,8 @@ export type MutationCreateHobbyArgs = {
 };
 
 
-export type MutationRemoveHobbyArgs = {
-  id: Scalars['Int'];
+export type MutationCreateMealArgs = {
+  input: CreateMealInput;
 };
 
 
@@ -362,59 +216,232 @@ export type MutationCreatePersonArgs = {
 };
 
 
+export type MutationCreateRestaurantArgs = {
+  input: CreateRestaurantInput;
+};
+
+
+export type MutationCreateRightArgs = {
+  createRightInput: CreateRightInput;
+};
+
+
+export type MutationCreateRoleArgs = {
+  createRoleInput: CreateRoleInput;
+};
+
+
+export type MutationCreateTreatyArgs = {
+  input: CreateTreatyInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  createUserInput: CreateUserInput;
+};
+
+
+export type MutationRemoveCityArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationRemoveCountryArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationRemoveCountryFromTreatyArgs = {
+  countryId: Scalars['Int'];
+  treatyId: Scalars['Int'];
+};
+
+
+export type MutationRemoveHobbyArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationRemoveMealArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationRemovePersonArgs = {
   id: Scalars['Int'];
 };
 
-export type Person = {
-  __typename?: 'Person';
+
+export type MutationRemoveRestaurantArgs = {
   id: Scalars['Int'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  occupation: Scalars['String'];
-  addresses?: Maybe<Array<Address>>;
-  hobbies?: Maybe<Array<Hobby>>;
-};
-
-export enum PriceRange {
-  Cheap = 'Cheap',
-  Moderate = 'Moderate',
-  Expensive = 'Expensive',
-  Luxury = 'Luxury'
-}
-
-export type Query = {
-  __typename?: 'Query';
-  role: Role;
-  roles: Array<Role>;
-  right: Right;
-  rights: Array<Right>;
-  user: User;
-  users: Array<User>;
-  countries: Array<Country>;
-  findOne: Country;
-  cities: Array<City>;
-  city: City;
-  treaties: Array<Treaty>;
-  treaty: Treaty;
-  restaurants: Array<Restaurant>;
-  restaurant: Restaurant;
-  meals: Array<Meal>;
-  meal: Meal;
-  hobbies: Array<Hobby>;
-  hobby: Hobby;
-  persons: Array<Person>;
-  person: Person;
 };
 
 
-export type QueryRoleArgs = {
+export type MutationRemoveRightArgs = {
   id: Scalars['Float'];
 };
 
 
-export type QueryRolesArgs = {
-  name?: Maybe<Scalars['String']>;
+export type MutationRemoveRoleArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type MutationRemoveTreatyArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationRemoveUserArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type MutationRestaurantUpdatedEventArgs = {
+  input?: InputMaybe<UpdateRestaurantInput>;
+};
+
+
+export type MutationRevokeRightFromRoleArgs = {
+  rightName: Scalars['String'];
+  roleName: Scalars['String'];
+};
+
+
+export type MutationUpdateCityArgs = {
+  input: UpdateCityInput;
+};
+
+
+export type MutationUpdateCountryArgs = {
+  input: UpdateCountryInput;
+};
+
+
+export type MutationUpdateMealArgs = {
+  input: UpdateMealInput;
+};
+
+
+export type MutationUpdateRestaurantArgs = {
+  input: UpdateRestaurantInput;
+};
+
+
+export type MutationUpdateRightArgs = {
+  updateRightInput: UpdateRightInput;
+};
+
+
+export type MutationUpdateRoleArgs = {
+  updateRoleInput: UpdateRoleInput;
+};
+
+
+export type MutationUpdateTreatyArgs = {
+  input: UpdateTreatyInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  updateUserInput: UpdateUserInput;
+};
+
+export type Person = {
+  __typename?: 'Person';
+  addresses?: Maybe<Array<Address>>;
+  firstName: Scalars['String'];
+  hobbies?: Maybe<Array<Hobby>>;
+  id: Scalars['Int'];
+  lastName: Scalars['String'];
+  occupation: Scalars['String'];
+};
+
+export enum PriceRange {
+  Cheap = 'Cheap',
+  Expensive = 'Expensive',
+  Luxury = 'Luxury',
+  Moderate = 'Moderate'
+}
+
+export type Query = {
+  __typename?: 'Query';
+  cities: Array<City>;
+  city: City;
+  countries: Array<Country>;
+  findOne: Country;
+  hello?: Maybe<Scalars['String']>;
+  hobbies: Array<Hobby>;
+  hobby: Hobby;
+  meal: Meal;
+  meals: Array<Meal>;
+  person: Person;
+  persons: Array<Person>;
+  restaurant: Restaurant;
+  restaurants: Array<Restaurant>;
+  right: Right;
+  rights: Array<Right>;
+  role: Role;
+  roles: Array<Role>;
+  treaties: Array<Treaty>;
+  treaty: Treaty;
+  user: User;
+  users: Array<User>;
+};
+
+
+export type QueryCitiesArgs = {
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryCityArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryFindOneArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryHobbiesArgs = {
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryHobbyArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryMealArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryMealsArgs = {
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryPersonArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryPersonsArgs = {
+  firstName?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryRestaurantArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryRestaurantsArgs = {
+  name?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -424,7 +451,22 @@ export type QueryRightArgs = {
 
 
 export type QueryRightsArgs = {
-  name?: Maybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryRoleArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type QueryRolesArgs = {
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryTreatyArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -434,256 +476,156 @@ export type QueryUserArgs = {
 
 
 export type QueryUsersArgs = {
-  userName?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryFindOneArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryCitiesArgs = {
-  name?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryCityArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryTreatyArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryRestaurantsArgs = {
-  name?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryRestaurantArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryMealsArgs = {
-  name?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryMealArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryHobbiesArgs = {
-  name?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryHobbyArgs = {
-  id: Scalars['Int'];
-};
-
-
-export type QueryPersonsArgs = {
-  firstName?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryPersonArgs = {
-  id: Scalars['Int'];
+  userName?: InputMaybe<Scalars['String']>;
 };
 
 export type Restaurant = {
   __typename?: 'Restaurant';
+  city: City;
+  cityId: Scalars['Float'];
   id: Scalars['Int'];
+  meals?: Maybe<Array<Meal>>;
   name: Scalars['String'];
   priceRange?: Maybe<PriceRange>;
-  meals?: Maybe<Array<Meal>>;
-  cityId: Scalars['Float'];
-  city: City;
 };
 
 export type Right = {
   __typename?: 'Right';
+  description: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  description: Scalars['String'];
   roles?: Maybe<Array<Role>>;
 };
 
 export type Role = {
   __typename?: 'Role';
+  description: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
-  description: Scalars['String'];
   rights?: Maybe<Array<Right>>;
   users?: Maybe<Array<User>>;
 };
 
 export type Treaty = {
   __typename?: 'Treaty';
+  countries?: Maybe<Array<Country>>;
   id: Scalars['Int'];
   name: Scalars['String'];
-  countries?: Maybe<Array<Country>>;
 };
 
 export type UpdateCityInput = {
-  name?: Maybe<Scalars['String']>;
-  population?: Maybe<Scalars['Int']>;
-  countryId?: Maybe<Scalars['Int']>;
+  countryId?: InputMaybe<Scalars['Int']>;
   id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
+  population?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateCountryInput = {
-  name?: Maybe<Scalars['String']>;
-  population?: Maybe<Scalars['Int']>;
-  continent?: Maybe<Continent>;
+  continent?: InputMaybe<Continent>;
   id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
+  population?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateMealInput = {
-  name?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateRestaurantInput = {
-  name?: Maybe<Scalars['String']>;
-  priceRange?: Maybe<PriceRange>;
-  cityId?: Maybe<Scalars['Int']>;
+  cityId: Scalars['Int'];
   id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateRightInput = {
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateRoleInput = {
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateTreatyInput = {
-  name?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInput = {
-  userName?: Maybe<Scalars['String']>;
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
   id: Scalars['Int'];
+  lastName?: InputMaybe<Scalars['String']>;
+  userName?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['Int'];
-  userName: Scalars['String'];
   firstName: Scalars['String'];
+  id: Scalars['Int'];
   lastName: Scalars['String'];
   refreshToken: Scalars['String'];
   roles?: Maybe<Array<Role>>;
+  userName: Scalars['String'];
 };
-
 
 export enum Join__Graph {
   Auth = 'AUTH',
   Country = 'COUNTRY',
+  Events = 'EVENTS',
   Food = 'FOOD',
   People = 'PEOPLE'
 }
 
-
 export enum Link__Purpose {
-  /** `SECURITY` features provide metadata necessary to securely resolve fields. */
-  Security = 'SECURITY',
   /** `EXECUTION` features provide metadata necessary for operation execution. */
-  Execution = 'EXECUTION'
+  Execution = 'EXECUTION',
+  /** `SECURITY` features provide metadata necessary to securely resolve fields. */
+  Security = 'SECURITY'
 }
-
 
 export type CreateCityMutationVariables = Exact<{
   input: CreateCityInput;
 }>;
 
 
-export type CreateCityMutation = (
-  { __typename?: 'Mutation' }
-  & { createCity: (
-    { __typename?: 'City' }
-    & Pick<City, 'id' | 'name' | 'touristic' | 'population'>
-  ) }
-);
+export type CreateCityMutation = { __typename?: 'Mutation', createCity: { __typename?: 'City', id: number, name: string, touristic?: boolean | null, population?: number | null } };
 
 export type CreateCountryMutationVariables = Exact<{
   input: CreateCountryInput;
 }>;
 
 
-export type CreateCountryMutation = (
-  { __typename?: 'Mutation' }
-  & { createCountry: (
-    { __typename?: 'Country' }
-    & Pick<Country, 'id' | 'name' | 'continent' | 'population'>
-  ) }
-);
+export type CreateCountryMutation = { __typename?: 'Mutation', createCountry: { __typename?: 'Country', id: number, name: string, continent?: Continent | null, population?: number | null } };
 
 export type RemoveCountryMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type RemoveCountryMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'removeCountry'>
-);
+export type RemoveCountryMutation = { __typename?: 'Mutation', removeCountry?: number | null };
 
 export type RemoveCityMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type RemoveCityMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'removeCity'>
-);
+export type RemoveCityMutation = { __typename?: 'Mutation', removeCity?: number | null };
 
 export type CitiesQueryVariables = Exact<{
-  name?: Maybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type CitiesQuery = (
-  { __typename?: 'Query' }
-  & { cities: Array<(
-    { __typename?: 'City' }
-    & Pick<City, 'id' | 'name'>
-    & { persons?: Maybe<Array<(
-      { __typename?: 'Person' }
-      & Pick<Person, 'firstName' | 'occupation'>
-    )>>, restaurants?: Maybe<Array<(
-      { __typename?: 'Restaurant' }
-      & Pick<Restaurant, 'name' | 'priceRange'>
-    )>> }
-  )> }
-);
+export type CitiesQuery = { __typename?: 'Query', cities: Array<{ __typename?: 'City', id: number, name: string, persons?: Array<{ __typename?: 'Person', firstName: string, occupation: string }> | null, restaurants?: Array<{ __typename?: 'Restaurant', name: string, priceRange?: PriceRange | null }> | null }> };
 
 export type CountriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CountriesQuery = (
-  { __typename?: 'Query' }
-  & { countries: Array<(
-    { __typename?: 'Country' }
-    & Pick<Country, 'id' | 'name' | 'continent'>
-  )> }
-);
+export type CountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', id: number, name: string, continent?: Continent | null }> };
 
 
 export const CreateCityDocument = gql`
@@ -908,21 +850,7 @@ export type ResolverTypeWrapper<T> = Promise<T> | T;
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-
-export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
-  fragment: string;
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-
-export type NewStitchingResolver<TResult, TParent, TContext, TArgs> = {
-  selectionSet: string;
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-export type StitchingResolver<TResult, TParent, TContext, TArgs> = LegacyStitchingResolver<TResult, TParent, TContext, TArgs> | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
-  | ResolverFn<TResult, TParent, TContext, TArgs>
-  | ResolverWithResolve<TResult, TParent, TContext, TArgs>
-  | StitchingResolver<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -936,7 +864,7 @@ export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
-) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -984,8 +912,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Address: ResolverTypeWrapper<Address>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   City: ResolverTypeWrapper<City>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Continent: Continent;
@@ -1003,8 +931,6 @@ export type ResolversTypes = {
   CreateUserInput: CreateUserInput;
   Difficulty: Difficulty;
   Hobby: ResolverTypeWrapper<Hobby>;
-  LoginResponse: ResolverTypeWrapper<LoginResponse>;
-  LoginUserInput: LoginUserInput;
   Meal: ResolverTypeWrapper<Meal>;
   Mutation: ResolverTypeWrapper<{}>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
@@ -1033,8 +959,8 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Address: Address;
-  Int: Scalars['Int'];
   String: Scalars['String'];
+  Int: Scalars['Int'];
   City: City;
   Boolean: Scalars['Boolean'];
   Country: Country;
@@ -1050,8 +976,6 @@ export type ResolversParentTypes = {
   CreateTreatyInput: CreateTreatyInput;
   CreateUserInput: CreateUserInput;
   Hobby: Hobby;
-  LoginResponse: LoginResponse;
-  LoginUserInput: LoginUserInput;
   Meal: Meal;
   Mutation: {};
   Float: Scalars['Float'];
@@ -1074,80 +998,84 @@ export type ResolversParentTypes = {
   link__Import: Scalars['link__Import'];
 };
 
-export type Join__FieldDirectiveArgs = {   graph: Join__Graph;
-  requires?: Maybe<Scalars['join__FieldSet']>;
-  provides?: Maybe<Scalars['join__FieldSet']>;
-  type?: Maybe<Scalars['String']>;
+export type Join__FieldDirectiveArgs = {
   external?: Maybe<Scalars['Boolean']>;
+  graph: Join__Graph;
   override?: Maybe<Scalars['String']>;
-  usedOverridden?: Maybe<Scalars['Boolean']>; };
+  provides?: Maybe<Scalars['join__FieldSet']>;
+  requires?: Maybe<Scalars['join__FieldSet']>;
+  type?: Maybe<Scalars['String']>;
+  usedOverridden?: Maybe<Scalars['Boolean']>;
+};
 
 export type Join__FieldDirectiveResolver<Result, Parent, ContextType = any, Args = Join__FieldDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Join__GraphDirectiveArgs = {   name: Scalars['String'];
-  url: Scalars['String']; };
+export type Join__GraphDirectiveArgs = {
+  name: Scalars['String'];
+  url: Scalars['String'];
+};
 
 export type Join__GraphDirectiveResolver<Result, Parent, ContextType = any, Args = Join__GraphDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Join__ImplementsDirectiveArgs = {   graph: Join__Graph;
-  interface: Scalars['String']; };
+export type Join__ImplementsDirectiveArgs = {
+  graph: Join__Graph;
+  interface: Scalars['String'];
+};
 
 export type Join__ImplementsDirectiveResolver<Result, Parent, ContextType = any, Args = Join__ImplementsDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type Join__TypeDirectiveArgs = {   graph: Join__Graph;
-  key?: Maybe<Scalars['join__FieldSet']>;
+export type Join__TypeDirectiveArgs = {
   extension?: Scalars['Boolean'];
-  resolvable?: Scalars['Boolean']; };
+  graph: Join__Graph;
+  key?: Maybe<Scalars['join__FieldSet']>;
+  resolvable?: Scalars['Boolean'];
+};
 
 export type Join__TypeDirectiveResolver<Result, Parent, ContextType = any, Args = Join__TypeDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type LinkDirectiveArgs = {   url?: Maybe<Scalars['String']>;
+export type LinkDirectiveArgs = {
   as?: Maybe<Scalars['String']>;
   for?: Maybe<Link__Purpose>;
-  import?: Maybe<Array<Maybe<Scalars['link__Import']>>>; };
+  import?: Maybe<Array<Maybe<Scalars['link__Import']>>>;
+  url?: Maybe<Scalars['String']>;
+};
 
 export type LinkDirectiveResolver<Result, Parent, ContextType = any, Args = LinkDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AddressResolvers<ContextType = any, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  detail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  personId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   city?: Resolver<ResolversTypes['City'], ParentType, ContextType>;
+  detail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  personId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type CityResolvers<ContextType = any, ParentType extends ResolversParentTypes['City'] = ResolversParentTypes['City']> = {
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  touristic?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  persons?: Resolver<Maybe<Array<ResolversTypes['Person']>>, ParentType, ContextType>;
   population?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   restaurants?: Resolver<Maybe<Array<ResolversTypes['Restaurant']>>, ParentType, ContextType>;
-  persons?: Resolver<Maybe<Array<ResolversTypes['Person']>>, ParentType, ContextType>;
+  touristic?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type CountryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Country'] = ResolversParentTypes['Country']> = {
+  capital?: Resolver<ResolversTypes['City'], ParentType, ContextType>;
+  cities?: Resolver<Maybe<Array<ResolversTypes['City']>>, ParentType, ContextType>;
+  continent?: Resolver<Maybe<ResolversTypes['Continent']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   population?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  cities?: Resolver<Maybe<Array<ResolversTypes['City']>>, ParentType, ContextType>;
   treaties?: Resolver<Maybe<Array<ResolversTypes['Treaty']>>, ParentType, ContextType>;
-  capital?: Resolver<ResolversTypes['City'], ParentType, ContextType>;
-  continent?: Resolver<Maybe<ResolversTypes['Continent']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type HobbyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Hobby'] = ResolversParentTypes['Hobby']> = {
+  difficulty?: Resolver<Maybe<ResolversTypes['Difficulty']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  difficulty?: Resolver<Maybe<ResolversTypes['Difficulty']>, ParentType, ContextType>;
   persons?: Resolver<Maybe<Array<ResolversTypes['Person']>>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type LoginResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginResponse'] = ResolversParentTypes['LoginResponse']> = {
-  access_token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  rights?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1159,118 +1087,119 @@ export type MealResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationCreateRoleArgs, 'createRoleInput'>>;
-  updateRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationUpdateRoleArgs, 'updateRoleInput'>>;
-  removeRole?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationRemoveRoleArgs, 'id'>>;
-  assignRoleToUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  revokeRoleFromUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  revokeAllRolesFromUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createRight?: Resolver<ResolversTypes['Right'], ParentType, ContextType, RequireFields<MutationCreateRightArgs, 'createRightInput'>>;
-  updateRight?: Resolver<ResolversTypes['Right'], ParentType, ContextType, RequireFields<MutationUpdateRightArgs, 'updateRightInput'>>;
-  removeRight?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationRemoveRightArgs, 'id'>>;
-  assignRightToRole?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAssignRightToRoleArgs, 'rightName' | 'roleName'>>;
-  revokeRightFromRole?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationRevokeRightFromRoleArgs, 'rightName' | 'roleName'>>;
-  login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'loginUserInput'>>;
-  createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'createUserInput'>>;
-  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'updateUserInput'>>;
-  removeUser?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationRemoveUserArgs, 'id'>>;
-  createCountry?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<MutationCreateCountryArgs, 'input'>>;
-  updateCountry?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<MutationUpdateCountryArgs, 'input'>>;
-  removeCountry?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveCountryArgs, 'id'>>;
   addCountryToTreaty?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<MutationAddCountryToTreatyArgs, 'countryId' | 'treatyId'>>;
-  removeCountryFromTreaty?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<MutationRemoveCountryFromTreatyArgs, 'countryId' | 'treatyId'>>;
+  assignRightToRole?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAssignRightToRoleArgs, 'rightName' | 'roleName'>>;
+  assignRoleToUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createCity?: Resolver<ResolversTypes['City'], ParentType, ContextType, RequireFields<MutationCreateCityArgs, 'input'>>;
-  updateCity?: Resolver<ResolversTypes['City'], ParentType, ContextType, RequireFields<MutationUpdateCityArgs, 'input'>>;
-  removeCity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveCityArgs, 'id'>>;
-  createTreaty?: Resolver<ResolversTypes['Treaty'], ParentType, ContextType, RequireFields<MutationCreateTreatyArgs, 'input'>>;
-  updateTreaty?: Resolver<ResolversTypes['Treaty'], ParentType, ContextType, RequireFields<MutationUpdateTreatyArgs, 'input'>>;
-  removeTreaty?: Resolver<ResolversTypes['Treaty'], ParentType, ContextType, RequireFields<MutationRemoveTreatyArgs, 'id'>>;
-  createRestaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateRestaurantArgs, 'input'>>;
-  updateRestaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationUpdateRestaurantArgs, 'input'>>;
-  removeRestaurant?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveRestaurantArgs, 'id'>>;
-  createMeal?: Resolver<ResolversTypes['Meal'], ParentType, ContextType, RequireFields<MutationCreateMealArgs, 'input'>>;
-  updateMeal?: Resolver<ResolversTypes['Meal'], ParentType, ContextType, RequireFields<MutationUpdateMealArgs, 'input'>>;
-  removeMeal?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveMealArgs, 'id'>>;
+  createCountry?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<MutationCreateCountryArgs, 'input'>>;
   createHobby?: Resolver<ResolversTypes['Hobby'], ParentType, ContextType, RequireFields<MutationCreateHobbyArgs, 'input'>>;
-  removeHobby?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveHobbyArgs, 'id'>>;
+  createMeal?: Resolver<ResolversTypes['Meal'], ParentType, ContextType, RequireFields<MutationCreateMealArgs, 'input'>>;
   createPerson?: Resolver<ResolversTypes['Person'], ParentType, ContextType, RequireFields<MutationCreatePersonArgs, 'input'>>;
+  createRestaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationCreateRestaurantArgs, 'input'>>;
+  createRight?: Resolver<ResolversTypes['Right'], ParentType, ContextType, RequireFields<MutationCreateRightArgs, 'createRightInput'>>;
+  createRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationCreateRoleArgs, 'createRoleInput'>>;
+  createTreaty?: Resolver<ResolversTypes['Treaty'], ParentType, ContextType, RequireFields<MutationCreateTreatyArgs, 'input'>>;
+  createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'createUserInput'>>;
+  removeCity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveCityArgs, 'id'>>;
+  removeCountry?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveCountryArgs, 'id'>>;
+  removeCountryFromTreaty?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<MutationRemoveCountryFromTreatyArgs, 'countryId' | 'treatyId'>>;
+  removeHobby?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveHobbyArgs, 'id'>>;
+  removeMeal?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveMealArgs, 'id'>>;
   removePerson?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemovePersonArgs, 'id'>>;
+  removeRestaurant?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationRemoveRestaurantArgs, 'id'>>;
+  removeRight?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationRemoveRightArgs, 'id'>>;
+  removeRole?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationRemoveRoleArgs, 'id'>>;
+  removeTreaty?: Resolver<ResolversTypes['Treaty'], ParentType, ContextType, RequireFields<MutationRemoveTreatyArgs, 'id'>>;
+  removeUser?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationRemoveUserArgs, 'id'>>;
+  restaurantUpdatedEvent?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<MutationRestaurantUpdatedEventArgs>>;
+  revokeAllRolesFromUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  revokeRightFromRole?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationRevokeRightFromRoleArgs, 'rightName' | 'roleName'>>;
+  revokeRoleFromUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updateCity?: Resolver<ResolversTypes['City'], ParentType, ContextType, RequireFields<MutationUpdateCityArgs, 'input'>>;
+  updateCountry?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<MutationUpdateCountryArgs, 'input'>>;
+  updateMeal?: Resolver<ResolversTypes['Meal'], ParentType, ContextType, RequireFields<MutationUpdateMealArgs, 'input'>>;
+  updateRestaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationUpdateRestaurantArgs, 'input'>>;
+  updateRight?: Resolver<ResolversTypes['Right'], ParentType, ContextType, RequireFields<MutationUpdateRightArgs, 'updateRightInput'>>;
+  updateRole?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<MutationUpdateRoleArgs, 'updateRoleInput'>>;
+  updateTreaty?: Resolver<ResolversTypes['Treaty'], ParentType, ContextType, RequireFields<MutationUpdateTreatyArgs, 'input'>>;
+  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'updateUserInput'>>;
 };
 
 export type PersonResolvers<ContextType = any, ParentType extends ResolversParentTypes['Person'] = ResolversParentTypes['Person']> = {
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  addresses?: Resolver<Maybe<Array<ResolversTypes['Address']>>, ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  hobbies?: Resolver<Maybe<Array<ResolversTypes['Hobby']>>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   occupation?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  addresses?: Resolver<Maybe<Array<ResolversTypes['Address']>>, ParentType, ContextType>;
-  hobbies?: Resolver<Maybe<Array<ResolversTypes['Hobby']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<QueryRoleArgs, 'id'>>;
-  roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType, RequireFields<QueryRolesArgs, never>>;
-  right?: Resolver<ResolversTypes['Right'], ParentType, ContextType, RequireFields<QueryRightArgs, 'id'>>;
-  rights?: Resolver<Array<ResolversTypes['Right']>, ParentType, ContextType, RequireFields<QueryRightsArgs, never>>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryUserArgs, 'username'>>;
-  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUsersArgs, never>>;
+  cities?: Resolver<Array<ResolversTypes['City']>, ParentType, ContextType, Partial<QueryCitiesArgs>>;
+  city?: Resolver<ResolversTypes['City'], ParentType, ContextType, RequireFields<QueryCityArgs, 'id'>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
   findOne?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<QueryFindOneArgs, 'id'>>;
-  cities?: Resolver<Array<ResolversTypes['City']>, ParentType, ContextType, RequireFields<QueryCitiesArgs, never>>;
-  city?: Resolver<ResolversTypes['City'], ParentType, ContextType, RequireFields<QueryCityArgs, 'id'>>;
+  hello?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  hobbies?: Resolver<Array<ResolversTypes['Hobby']>, ParentType, ContextType, Partial<QueryHobbiesArgs>>;
+  hobby?: Resolver<ResolversTypes['Hobby'], ParentType, ContextType, RequireFields<QueryHobbyArgs, 'id'>>;
+  meal?: Resolver<ResolversTypes['Meal'], ParentType, ContextType, RequireFields<QueryMealArgs, 'id'>>;
+  meals?: Resolver<Array<ResolversTypes['Meal']>, ParentType, ContextType, Partial<QueryMealsArgs>>;
+  person?: Resolver<ResolversTypes['Person'], ParentType, ContextType, RequireFields<QueryPersonArgs, 'id'>>;
+  persons?: Resolver<Array<ResolversTypes['Person']>, ParentType, ContextType, Partial<QueryPersonsArgs>>;
+  restaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<QueryRestaurantArgs, 'id'>>;
+  restaurants?: Resolver<Array<ResolversTypes['Restaurant']>, ParentType, ContextType, Partial<QueryRestaurantsArgs>>;
+  right?: Resolver<ResolversTypes['Right'], ParentType, ContextType, RequireFields<QueryRightArgs, 'id'>>;
+  rights?: Resolver<Array<ResolversTypes['Right']>, ParentType, ContextType, Partial<QueryRightsArgs>>;
+  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<QueryRoleArgs, 'id'>>;
+  roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType, Partial<QueryRolesArgs>>;
   treaties?: Resolver<Array<ResolversTypes['Treaty']>, ParentType, ContextType>;
   treaty?: Resolver<ResolversTypes['Treaty'], ParentType, ContextType, RequireFields<QueryTreatyArgs, 'id'>>;
-  restaurants?: Resolver<Array<ResolversTypes['Restaurant']>, ParentType, ContextType, RequireFields<QueryRestaurantsArgs, never>>;
-  restaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<QueryRestaurantArgs, 'id'>>;
-  meals?: Resolver<Array<ResolversTypes['Meal']>, ParentType, ContextType, RequireFields<QueryMealsArgs, never>>;
-  meal?: Resolver<ResolversTypes['Meal'], ParentType, ContextType, RequireFields<QueryMealArgs, 'id'>>;
-  hobbies?: Resolver<Array<ResolversTypes['Hobby']>, ParentType, ContextType, RequireFields<QueryHobbiesArgs, never>>;
-  hobby?: Resolver<ResolversTypes['Hobby'], ParentType, ContextType, RequireFields<QueryHobbyArgs, 'id'>>;
-  persons?: Resolver<Array<ResolversTypes['Person']>, ParentType, ContextType, RequireFields<QueryPersonsArgs, never>>;
-  person?: Resolver<ResolversTypes['Person'], ParentType, ContextType, RequireFields<QueryPersonArgs, 'id'>>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryUserArgs, 'username'>>;
+  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, Partial<QueryUsersArgs>>;
 };
 
 export type RestaurantResolvers<ContextType = any, ParentType extends ResolversParentTypes['Restaurant'] = ResolversParentTypes['Restaurant']> = {
+  city?: Resolver<ResolversTypes['City'], ParentType, ContextType>;
+  cityId?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  meals?: Resolver<Maybe<Array<ResolversTypes['Meal']>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   priceRange?: Resolver<Maybe<ResolversTypes['PriceRange']>, ParentType, ContextType>;
-  meals?: Resolver<Maybe<Array<ResolversTypes['Meal']>>, ParentType, ContextType>;
-  cityId?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  city?: Resolver<ResolversTypes['City'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type RightResolvers<ContextType = any, ParentType extends ResolversParentTypes['Right'] = ResolversParentTypes['Right']> = {
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   roles?: Resolver<Maybe<Array<ResolversTypes['Role']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type RoleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']> = {
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   rights?: Resolver<Maybe<Array<ResolversTypes['Right']>>, ParentType, ContextType>;
   users?: Resolver<Maybe<Array<ResolversTypes['User']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TreatyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Treaty'] = ResolversParentTypes['Treaty']> = {
+  countries?: Resolver<Maybe<Array<ResolversTypes['Country']>>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  countries?: Resolver<Maybe<Array<ResolversTypes['Country']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  userName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   roles?: Resolver<Maybe<Array<ResolversTypes['Role']>>, ParentType, ContextType>;
+  userName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1287,7 +1216,6 @@ export type Resolvers<ContextType = any> = {
   City?: CityResolvers<ContextType>;
   Country?: CountryResolvers<ContextType>;
   Hobby?: HobbyResolvers<ContextType>;
-  LoginResponse?: LoginResponseResolvers<ContextType>;
   Meal?: MealResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Person?: PersonResolvers<ContextType>;
@@ -1301,12 +1229,6 @@ export type Resolvers<ContextType = any> = {
   link__Import?: GraphQLScalarType;
 };
 
-
-/**
- * @deprecated
- * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
- */
-export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
   join__field?: Join__FieldDirectiveResolver<any, any, ContextType>;
   join__graph?: Join__GraphDirectiveResolver<any, any, ContextType>;
@@ -1314,10 +1236,3 @@ export type DirectiveResolvers<ContextType = any> = {
   join__type?: Join__TypeDirectiveResolver<any, any, ContextType>;
   link?: LinkDirectiveResolver<any, any, ContextType>;
 };
-
-
-/**
- * @deprecated
- * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
- */
-export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<ContextType>;

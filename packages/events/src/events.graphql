@@ -1,0 +1,13 @@
+type Query {
+  hello: String
+}
+
+type Mutation {
+  restaurantUpdatedEvent(input: UpdateRestaurantInput): Int
+}
+
+input UpdateRestaurantInput {
+  id: Int!
+  name: String
+  cityId: Int!
+}
