@@ -1,0 +1,31 @@
+headers:
+  all: # Header rules for all subgraphs
+    request:
+      - propagate:
+          matching: .*
+# Do not enable introspection in production!
+supergraph:
+  introspection: true
+  listen: 127.0.0.1:4001
+health_check:
+  listen: 127.0.0.1:8081
+  enabled: true
+
+authentication:
+  experimental:
+    jwt:
+      jwks_urls:
+        - http://localhost:3100/.well-known/jwks.json
+      header_name: Authorization
+      header_value_prefix: Bearer
+      cooldown: 15s
+
+include_subgraph_errors:
+  all: true # Propagate errors from all subgraphs
+cors:
+  origins:
+    - http://localhost:4000 # Allows any locally-running client to run against your Router
+    - https://studio.apollographql.com # Allows Apollo Studio to still run queries against your Router
+
+rhai:
+  main: 'external.rhai'

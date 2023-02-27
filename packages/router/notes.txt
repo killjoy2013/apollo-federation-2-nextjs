@@ -1,5 +1,12 @@
 APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA
 
-APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=FederatedGraph21@current ./router --config router.yaml --log debug
+APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=FederatedGraph21@current ./router --config router_external.yaml
+
+APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=FederatedGraph21@current ./router --config router_internal.yaml
+
 
 APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=FederatedGraph21@current rover supergraph fetch FederatedGraph21@current > supergraph-schema.graphql
+
+
+
+

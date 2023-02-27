@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   Int,
   Mutation,
   Parent,
@@ -34,8 +35,11 @@ export class RestaurantResolver {
   }
 
   @Mutation(() => Restaurant)
-  updateRestaurant(@Args('input') input: UpdateRestaurantInput) {
-    return this.restaurantService.update(input);
+  updateRestaurant(
+    @Context() ctx: any,
+    @Args('input') input: UpdateRestaurantInput,
+  ) {
+    return this.restaurantService.update(ctx, input);
   }
 
   @Mutation(() => Int, { nullable: true })

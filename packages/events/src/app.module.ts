@@ -22,6 +22,15 @@ import { EventProducerService } from './services/event.producer.service';
         path: join(process.cwd(), 'src/graphql.ts'),
         outputAs: 'class',
       },
+      context: (ctx) => {
+        const { req } = ctx;
+
+        const username = req.headers.username ?? null;
+        const rights = req.headers.rights
+          ? req.headers.rights.split(',').map((m) => m.trim())
+          : null;
+        return { username, rights };
+      },
     }),
   ],
   controllers: [],
