@@ -2,15 +2,9 @@
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -44,7 +38,7 @@ export enum Continent {
   Africa = 'Africa',
   America = 'America',
   Asia = 'Asia',
-  Europe = 'Europe',
+  Europe = 'Europe'
 }
 
 export type Country = {
@@ -121,7 +115,7 @@ export type CreateUserInput = {
 export enum Difficulty {
   Difficult = 'Difficult',
   Easy = 'Easy',
-  Moderate = 'Moderate',
+  Moderate = 'Moderate'
 }
 
 export type Hobby = {
@@ -179,137 +173,170 @@ export type Mutation = {
   updateUser: User;
 };
 
+
 export type MutationAddCountryToTreatyArgs = {
   countryId: Scalars['Int'];
   treatyId: Scalars['Int'];
 };
+
 
 export type MutationAssignRightToRoleArgs = {
   rightName: Scalars['String'];
   roleName: Scalars['String'];
 };
 
+
 export type MutationCreateCityArgs = {
   input: CreateCityInput;
 };
+
 
 export type MutationCreateCountryArgs = {
   input: CreateCountryInput;
 };
 
+
 export type MutationCreateHobbyArgs = {
   input: CreateHobbyInput;
 };
+
 
 export type MutationCreateMealArgs = {
   input: CreateMealInput;
 };
 
+
 export type MutationCreatePersonArgs = {
   input: CreatePersonInput;
 };
+
 
 export type MutationCreateRestaurantArgs = {
   input: CreateRestaurantInput;
 };
 
+
 export type MutationCreateRightArgs = {
   createRightInput: CreateRightInput;
 };
+
 
 export type MutationCreateRoleArgs = {
   createRoleInput: CreateRoleInput;
 };
 
+
 export type MutationCreateTreatyArgs = {
   input: CreateTreatyInput;
 };
+
 
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
 };
 
+
 export type MutationRemoveCityArgs = {
   id: Scalars['Int'];
 };
 
+
 export type MutationRemoveCountryArgs = {
   id: Scalars['Int'];
 };
+
 
 export type MutationRemoveCountryFromTreatyArgs = {
   countryId: Scalars['Int'];
   treatyId: Scalars['Int'];
 };
 
+
 export type MutationRemoveHobbyArgs = {
   id: Scalars['Int'];
 };
+
 
 export type MutationRemoveMealArgs = {
   id: Scalars['Int'];
 };
 
+
 export type MutationRemovePersonArgs = {
   id: Scalars['Int'];
 };
+
 
 export type MutationRemoveRestaurantArgs = {
   id: Scalars['Int'];
 };
 
+
 export type MutationRemoveRightArgs = {
   id: Scalars['Float'];
 };
+
 
 export type MutationRemoveRoleArgs = {
   id: Scalars['Float'];
 };
 
+
 export type MutationRemoveTreatyArgs = {
   id: Scalars['Int'];
 };
+
 
 export type MutationRemoveUserArgs = {
   id: Scalars['Float'];
 };
 
+
 export type MutationRestaurantUpdatedEventArgs = {
   input?: InputMaybe<UpdateRestaurantInput>;
 };
+
 
 export type MutationRevokeRightFromRoleArgs = {
   rightName: Scalars['String'];
   roleName: Scalars['String'];
 };
 
+
 export type MutationUpdateCityArgs = {
   input: UpdateCityInput;
 };
+
 
 export type MutationUpdateCountryArgs = {
   input: UpdateCountryInput;
 };
 
+
 export type MutationUpdateMealArgs = {
   input: UpdateMealInput;
 };
+
 
 export type MutationUpdateRestaurantArgs = {
   input: UpdateRestaurantInput;
 };
 
+
 export type MutationUpdateRightArgs = {
   updateRightInput: UpdateRightInput;
 };
+
 
 export type MutationUpdateRoleArgs = {
   updateRoleInput: UpdateRoleInput;
 };
 
+
 export type MutationUpdateTreatyArgs = {
   input: UpdateTreatyInput;
 };
+
 
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
@@ -329,7 +356,7 @@ export enum PriceRange {
   Cheap = 'Cheap',
   Expensive = 'Expensive',
   Luxury = 'Luxury',
-  Moderate = 'Moderate',
+  Moderate = 'Moderate'
 }
 
 export type Query = {
@@ -357,73 +384,91 @@ export type Query = {
   users: Array<User>;
 };
 
+
 export type QueryCitiesArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryCityArgs = {
   id: Scalars['Int'];
 };
 
+
 export type QueryFindOneArgs = {
   id: Scalars['Int'];
 };
+
 
 export type QueryHobbiesArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+
 export type QueryHobbyArgs = {
   id: Scalars['Int'];
 };
+
 
 export type QueryMealArgs = {
   id: Scalars['Int'];
 };
 
+
 export type QueryMealsArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryPersonArgs = {
   id: Scalars['Int'];
 };
 
+
 export type QueryPersonsArgs = {
   firstName?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryRestaurantArgs = {
   id: Scalars['Int'];
 };
 
+
 export type QueryRestaurantsArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryRightArgs = {
   id: Scalars['Float'];
 };
 
+
 export type QueryRightsArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryRoleArgs = {
   id: Scalars['Float'];
 };
 
+
 export type QueryRolesArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
+
 
 export type QueryTreatyArgs = {
   id: Scalars['Int'];
 };
 
+
 export type QueryUserArgs = {
   username: Scalars['String'];
 };
+
 
 export type QueryUsersArgs = {
   userName?: InputMaybe<Scalars['String']>;
@@ -527,67 +572,22 @@ export enum Join__Graph {
   Country = 'COUNTRY',
   Events = 'EVENTS',
   Food = 'FOOD',
-  People = 'PEOPLE',
+  People = 'PEOPLE'
 }
 
 export enum Link__Purpose {
   /** `EXECUTION` features provide metadata necessary for operation execution. */
   Execution = 'EXECUTION',
   /** `SECURITY` features provide metadata necessary to securely resolve fields. */
-  Security = 'SECURITY',
+  Security = 'SECURITY'
 }
 
-export type RestaurantUpdatedEventMutationVariables = Exact<{
-  input?: InputMaybe<UpdateRestaurantInput>;
+export type CityQueryVariables = Exact<{
+  cityId: Scalars['Int'];
 }>;
 
-export type RestaurantUpdatedEventMutation = {
-  __typename?: 'Mutation';
-  restaurantUpdatedEvent?: number | null;
-};
 
-export const RestaurantUpdatedEventDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'RestaurantUpdatedEvent' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'input' },
-          },
-          type: {
-            kind: 'NamedType',
-            name: { kind: 'Name', value: 'UpdateRestaurantInput' },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'restaurantUpdatedEvent' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'input' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'input' },
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  RestaurantUpdatedEventMutation,
-  RestaurantUpdatedEventMutationVariables
->;
+export type CityQuery = { __typename?: 'Query', city: { __typename?: 'City', id: number, name: string, population?: number | null } };
+
+
+export const CityDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"City"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cityId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"city"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cityId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"population"}}]}}]}}]} as unknown as DocumentNode<CityQuery, CityQueryVariables>;

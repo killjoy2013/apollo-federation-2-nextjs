@@ -12,4 +12,7 @@ export class UpdateRestaurantInput extends PartialType(CreateRestaurantInput) {
 
   @Field((type) => PriceRange, { nullable: true })
   priceRange: PriceRange;
+
+  @Field((type) => Int, { nullable: true })
+  cityId: number;
 }

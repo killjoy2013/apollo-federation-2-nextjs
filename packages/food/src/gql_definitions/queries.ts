@@ -1,11 +1,15 @@
 import gql from 'graphql-tag';
 
-const HELLO = gql`
-  query hello {
-    hello
+const CITY = gql`
+  query City($cityId: Int!) {
+    city(id: $cityId) {
+      id
+      name
+      population
+    }
   }
 `;
 
 export const Queries = {
-  HELLO,
+  CITY,
 };

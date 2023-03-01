@@ -10,3 +10,7 @@ APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=Fede
 
 
 
+APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=FederatedGraph21@current rover subgraph list FederatedGraph21@current
+
+
+APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=FederatedGraph21@current rover subgraph delete FederatedGraph21@current --name events

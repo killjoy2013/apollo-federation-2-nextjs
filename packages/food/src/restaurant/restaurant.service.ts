@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { Restaurant } from './entities/restaurant.entity';
+import { Size } from './enums';
 
 @Injectable()
 export class RestaurantService {
@@ -19,10 +20,12 @@ export class RestaurantService {
 
   async findAll(name: string = null): Promise<Restaurant[]> {
     if (name !== null) {
-      return await this.restaurantRepo
+      const res = await this.restaurantRepo
         .createQueryBuilder('restaurant')
         .where('restaurant.name like :name', { name: `%${name}%` })
         .getMany();
+
+      return res;
     } else {
       return await this.restaurantRepo.find();
     }
@@ -46,10 +49,16 @@ export class RestaurantService {
         id: input.id,
       },
     });
-    const updatedRestaurant = await this.restaurantRepo.save({
-      ...found,
-      ...input,
-    });
+
+    const CityQuery = gql`
+      query City($cityId: Int!) {
+        city(id: $cityId) {
+          id
+          name
+          population
+        }
+      }
+    `;
 
     const graphQLClient = new GraphQLClient('http://localhost:4002', {
       headers: {
@@ -58,18 +67,21 @@ export class RestaurantService {
       },
     });
 
-    const RestaurantUpdatedEvent = gql`
-      mutation RestaurantUpdatedEvent($input: UpdateRestaurantInput) {
-        restaurantUpdatedEvent(input: $input)
-      }
-    `;
+    const { city } = await graphQLClient.request(CityQuery, {
+      cityId: found.cityId,
+    });
 
-    await graphQLClient.request(RestaurantUpdatedEvent, {
-      input: {
-        cityId: 1,
-        id: 2,
-        name: 'Mikla',
-      },
+    const size =
+      city.population <= 1000
+        ? Size.Small
+        : city.population <= 20000
+        ? Size.Medium
+        : Size.Large;
+
+    const updatedRestaurant = await this.restaurantRepo.save({
+      ...found,
+      ...input,
+      size,
     });
 
     return updatedRestaurant;

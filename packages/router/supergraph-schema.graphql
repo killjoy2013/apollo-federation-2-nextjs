@@ -291,6 +291,7 @@ type Restaurant
   id: Int!
   name: String!
   priceRange: PriceRange
+  size: Size
   meals: [Meal!]
   cityId: Float!
   city: City!
@@ -313,6 +314,14 @@ type Role
   description: String!
   rights: [Right!]
   users: [User!]
+}
+
+enum Size
+  @join__type(graph: FOOD)
+{
+  Small
+  Medium
+  Large
 }
 
 type Treaty
