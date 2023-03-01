@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class newMigration1661891474681 implements MigrationInterface {
+export class Seed1661891474681 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             INSERT INTO auth."role" (name, description) VALUES('ADMIN_ROLE', NULL);

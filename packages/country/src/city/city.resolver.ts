@@ -6,7 +6,7 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
-import { GetUser } from '../decorators/get-user.decorator';
+
 import { CityService } from './city.service';
 import { CreateCityInput } from './dto/create-city.input';
 import { UpdateCityInput } from './dto/update-city.input';
@@ -38,10 +38,7 @@ export class CityResolver {
   }
 
   @Mutation(() => Int, { nullable: true })
-  removeCity(
-    @GetUser() user: any,
-    @Args('id', { type: () => Int, nullable: false }) id: number,
-  ) {
+  removeCity(@Args('id', { type: () => Int, nullable: false }) id: number) {
     return this.cityService.remove(id);
   }
   @ResolveReference()

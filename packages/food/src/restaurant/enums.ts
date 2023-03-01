@@ -8,3 +8,11 @@ export enum PriceRange {
 }
 
 registerEnumType(PriceRange, { name: 'PriceRange' });
+
+export enum Size {
+  Small = 'Small',
+  Medium = 'Medium',
+  Large = 'Large',
+}
+
+registerEnumType(Size, { name: 'Size' });

@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class newMigration1661891561650 implements MigrationInterface {
+export class AddRoleRights1661891561650 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
             INSERT INTO auth."right" ("name", description) VALUES('countries', 'query countries');

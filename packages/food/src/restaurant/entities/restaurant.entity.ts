@@ -7,7 +7,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PriceRange } from '../enums';
+import { PriceRange, Size } from '../enums';
 
 @Entity({ schema: 'food' })
 @ObjectType()
@@ -29,6 +29,15 @@ export class Restaurant {
   })
   @Field(() => PriceRange, { nullable: true })
   priceRange: PriceRange;
+
+  @Column({
+    type: 'enum',
+    enum: Size,
+    name: 'size',
+    nullable: true,
+  })
+  @Field(() => Size, { nullable: true })
+  size: Size;
 
   @ManyToMany(() => Meal, (meal) => meal.restaurants)
   @Field(() => [Meal], { nullable: true })

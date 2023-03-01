@@ -2,17 +2,19 @@ import * as fs from 'fs';
 import * as yaml from 'yaml';
 
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { MigrationsProvider } from './migrations.provider';
+import { Entities } from './const';
 
 const file = fs.readFileSync('./config/config.yaml', 'utf8');
 const config = yaml.parse(file);
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  entities: ['dist/**/*entity.js'],
-  migrations: ['dist/db/migrations/**/*.js'],
+  entities: Entities,
+  migrations: MigrationsProvider,
   migrationsRun: true,
   url: config.db.url,
-  schema: 'food',
+  schema: 'auth',
 };
 
 export default new DataSource(dataSourceOptions);

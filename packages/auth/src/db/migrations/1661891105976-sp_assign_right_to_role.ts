@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class newMigration1661891105976 implements MigrationInterface {
+export class Procedures1661891105976 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`CREATE OR REPLACE FUNCTION auth.sp_assign_right_to_role(right_name character varying, role_name character varying)
             RETURNS void

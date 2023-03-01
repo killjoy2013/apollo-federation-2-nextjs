@@ -10,7 +10,7 @@ import { CountryService } from './country.service';
 import { Country } from './entities/country.entity';
 import { CreateCountryInput } from './dto/create-country.input';
 import { UpdateCountryInput } from './dto/update-country.input';
-import { GetUser } from '../decorators/get-user.decorator';
+
 import { UseGuards } from '@nestjs/common';
 import { RightGuard } from '../guards/right.guard';
 
@@ -44,10 +44,7 @@ export class CountryResolver {
   }
 
   @Mutation(() => Int, { nullable: true })
-  removeCountry(
-    @GetUser() user: any,
-    @Args('id', { type: () => Int, nullable: false }) id: number,
-  ) {
+  removeCountry(@Args('id', { type: () => Int, nullable: false }) id: number) {
     return this.countryService.remove(id);
   }
 

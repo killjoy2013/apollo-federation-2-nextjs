@@ -6,6 +6,7 @@ type Restaurant {
   id: Int!
   name: String!
   priceRange: PriceRange
+  size: Size
   meals: [Meal!]
   cityId: Float!
   city: City!
@@ -16,6 +17,12 @@ enum PriceRange {
   Moderate
   Expensive
   Luxury
+}
+
+enum Size {
+  Small
+  Medium
+  Large
 }
 
 type Meal {

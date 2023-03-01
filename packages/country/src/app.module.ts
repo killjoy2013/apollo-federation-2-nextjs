@@ -8,7 +8,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import configuration from 'config/configuration';
 import { join } from 'path';
-import { dataSourceOptions } from '../db/data-source';
+import { dataSourceOptions } from './db/data-source';
 import { CityModule } from './city/city.module';
 import { CountryModule } from './country/country.module';
 

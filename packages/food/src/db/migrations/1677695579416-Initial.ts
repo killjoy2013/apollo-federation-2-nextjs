@@ -1,11 +1,17 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class init1659025399386 implements MigrationInterface {
-  name = 'init1659025399386';
+export class Initial1677695579416 implements MigrationInterface {
+  name = 'Initial1677695579416';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "food"."restaurant" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_649e250d8b8165cb406d99aa30f" PRIMARY KEY ("id"))`,
+      `CREATE TYPE "food"."restaurant_price_range_enum" AS ENUM('Cheap', 'Moderate', 'Expensive', 'Luxury')`,
+    );
+    await queryRunner.query(
+      `CREATE TYPE "food"."restaurant_size_enum" AS ENUM('Small', 'Medium', 'Large')`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "food"."restaurant" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "price_range" "food"."restaurant_price_range_enum", "size" "food"."restaurant_size_enum", "cityId" integer NOT NULL, CONSTRAINT "PK_649e250d8b8165cb406d99aa30f" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "food"."meal" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_ada510a5aba19e6bb500f8f7817" PRIMARY KEY ("id"))`,
@@ -43,5 +49,7 @@ export class init1659025399386 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "food"."restaurant_meal"`);
     await queryRunner.query(`DROP TABLE "food"."meal"`);
     await queryRunner.query(`DROP TABLE "food"."restaurant"`);
+    await queryRunner.query(`DROP TYPE "food"."restaurant_size_enum"`);
+    await queryRunner.query(`DROP TYPE "food"."restaurant_price_range_enum"`);
   }
 }

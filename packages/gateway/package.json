@@ -23,10 +23,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@apollo/gateway": "~2.1.4",
-    "cookie-parser": "~1.4.6",
-    "graphql-playground-middleware-express": "~1.7.23",
-    "pg-connection-string": "~2.5.0",
+    "@apollo/gateway": "~2.3.2",
     "reflect-metadata": "~0.1.13"
   },
   "jest": {

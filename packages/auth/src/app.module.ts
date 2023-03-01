@@ -6,7 +6,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSourceOptions } from 'db/data-source';
+import { dataSourceOptions } from 'src/db/data-source';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { RoleRightModule } from './role-right/role-right.module';
@@ -19,7 +19,6 @@ import configuration from '../config/configuration';
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       resolvers: { JSON: GraphQLJSON },
-
       autoSchemaFile: {
         federation: 2,
         path: join(process.cwd(), 'auth.schema.graphql'),

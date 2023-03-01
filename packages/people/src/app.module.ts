@@ -7,7 +7,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSourceOptions } from 'db/data-source';
+import configuration from 'config/configuration';
+import { dataSourceOptions } from './db/data-source';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { HobbyModule } from './hobby/hobby.module';
@@ -17,7 +18,7 @@ import { PersonModule } from './person/person.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
 
