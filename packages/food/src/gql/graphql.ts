@@ -482,6 +482,7 @@ export type Restaurant = {
   meals?: Maybe<Array<Meal>>;
   name: Scalars['String'];
   priceRange?: Maybe<PriceRange>;
+  size?: Maybe<Size>;
 };
 
 export type Right = {
@@ -500,6 +501,12 @@ export type Role = {
   rights?: Maybe<Array<Right>>;
   users?: Maybe<Array<User>>;
 };
+
+export enum Size {
+  Large = 'Large',
+  Medium = 'Medium',
+  Small = 'Small'
+}
 
 export type Treaty = {
   __typename?: 'Treaty';

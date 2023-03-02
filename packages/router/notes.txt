@@ -1,7 +1,9 @@
 APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA
 
+##EXTERNAL
 APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=FederatedGraph21@current ./router --config router_external.yaml
 
+##INTERNAL
 APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA APOLLO_GRAPH_REF=FederatedGraph21@current ./router --config router_internal.yaml
 
 

@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { request, gql, GraphQLClient } from 'graphql-request';
+import { request, gql, GraphQLClient, RequestDocument } from 'graphql-request';
+import { graphql } from '../gql/gql';
 import { Repository } from 'typeorm';
 import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { Restaurant } from './entities/restaurant.entity';
 import { Size } from './enums';
+import { createGraphqlClient } from 'src/helpers';
+import { Queries } from 'src/gql_definitions/queries';
 
 @Injectable()
 export class RestaurantService {
@@ -50,24 +53,9 @@ export class RestaurantService {
       },
     });
 
-    const CityQuery = gql`
-      query City($cityId: Int!) {
-        city(id: $cityId) {
-          id
-          name
-          population
-        }
-      }
-    `;
+    const graphQLClient = createGraphqlClient(ctx.username, ctx.rights);
 
-    const graphQLClient = new GraphQLClient('http://localhost:4002', {
-      headers: {
-        username: ctx.username,
-        rights: ctx.rights,
-      },
-    });
-
-    const { city } = await graphQLClient.request(CityQuery, {
+    const { city } = await graphQLClient.request(Queries.CITY, {
       cityId: found.cityId,
     });
 
