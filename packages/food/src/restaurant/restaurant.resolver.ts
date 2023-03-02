@@ -14,6 +14,7 @@ import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { City } from './entities/city.proxy.entity';
 import { RestaurantService } from './restaurant.service';
+import { ExecutionContext } from '@nestjs/common';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
@@ -36,7 +37,7 @@ export class RestaurantResolver {
 
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Context() ctx: any,
+    @Context() ctx: ExecutionContext,
     @Args('input') input: UpdateRestaurantInput,
   ) {
     return this.restaurantService.update(ctx, input);

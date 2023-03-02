@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { request, gql, GraphQLClient, RequestDocument } from 'graphql-request';
 import { graphql } from '../gql/gql';
@@ -7,14 +7,18 @@ import { CreateRestaurantInput } from './dto/create-restaurant.input';
 import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { Restaurant } from './entities/restaurant.entity';
 import { Size } from './enums';
-import { createGraphqlClient } from 'src/helpers';
+//import { createGraphqlClient } from 'src/helpers';
 import { Queries } from 'src/gql_definitions/queries';
+import { GraphqlRequestService } from 'src/services/graphql-request.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class RestaurantService {
   constructor(
     @InjectRepository(Restaurant)
     private restaurantRepo: Repository<Restaurant>,
+    private graphqlRequestService: GraphqlRequestService,
+    private readonly config: ConfigService,
   ) {}
 
   async create(input: CreateRestaurantInput): Promise<Restaurant> {
@@ -46,18 +50,25 @@ export class RestaurantService {
     return await this.restaurantRepo.findOne({ where: { id } });
   }
 
-  async update(ctx: any, input: UpdateRestaurantInput): Promise<Restaurant> {
+  async update(
+    ctx: ExecutionContext,
+    input: UpdateRestaurantInput,
+  ): Promise<Restaurant> {
     const found = await this.restaurantRepo.findOne({
       where: {
         id: input.id,
       },
     });
 
-    const graphQLClient = createGraphqlClient(ctx.username, ctx.rights);
-
-    const { city } = await graphQLClient.request(Queries.CITY, {
-      cityId: found.cityId,
-    });
+    const { city } = await this.graphqlRequestService.client.request(
+      Queries.CITY,
+      {
+        cityId: found.cityId,
+      },
+      {
+        ...ctx.session,
+      },
+    );
 
     const size =
       city.population <= 1000

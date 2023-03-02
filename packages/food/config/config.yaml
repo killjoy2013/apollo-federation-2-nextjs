@@ -1,2 +1,5 @@
 db:
   url: 'postgres://postgres:postgres@localhost:5472/pocdb'
+
+schema:
+  internal_url: 'http://localhost:4002'
