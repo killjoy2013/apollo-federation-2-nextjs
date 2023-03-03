@@ -8,7 +8,7 @@ import { UpdateRestaurantInput } from './dto/update-restaurant.input';
 import { Restaurant } from './entities/restaurant.entity';
 import { Size } from './enums';
 //import { createGraphqlClient } from 'src/helpers';
-import { Queries } from 'src/gql_definitions/queries';
+import { CITY } from 'src/gql_definitions/queries';
 import { GraphqlRequestService } from 'src/services/graphql-request.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -61,7 +61,7 @@ export class RestaurantService {
     });
 
     const { city } = await this.graphqlRequestService.client.request(
-      Queries.CITY,
+      CITY,
       {
         cityId: found.cityId,
       },

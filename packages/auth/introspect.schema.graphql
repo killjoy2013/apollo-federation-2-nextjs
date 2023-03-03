@@ -30,10 +30,12 @@ directive @override(from: String!) on FIELD_DEFINITION
 
 directive @federation__composeDirective(name: String) repeatable on SCHEMA
 
-type Right {
+type User {
   id: Int!
-  name: String!
-  description: String!
+  userName: String!
+  firstName: String!
+  lastName: String!
+  refreshToken: String!
   roles: [Role!]
 }
 
@@ -45,12 +47,10 @@ type Role {
   users: [User!]
 }
 
-type User {
+type Right {
   id: Int!
-  userName: String!
-  firstName: String!
-  lastName: String!
-  refreshToken: String!
+  name: String!
+  description: String!
   roles: [Role!]
 }
 

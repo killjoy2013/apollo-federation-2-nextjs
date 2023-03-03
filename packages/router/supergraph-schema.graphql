@@ -163,7 +163,6 @@ scalar join__FieldSet
 enum join__Graph {
   AUTH @join__graph(name: "auth", url: "http://localhost:3100/graphql")
   COUNTRY @join__graph(name: "country", url: "http://localhost:3200/graphql")
-  EVENTS @join__graph(name: "events", url: "http://localhost:3500/graphql")
   FOOD @join__graph(name: "food", url: "http://localhost:3300/graphql")
   PEOPLE @join__graph(name: "people", url: "http://localhost:3400/graphql")
 }
@@ -193,7 +192,6 @@ type Meal
 type Mutation
   @join__type(graph: AUTH)
   @join__type(graph: COUNTRY)
-  @join__type(graph: EVENTS)
   @join__type(graph: FOOD)
   @join__type(graph: PEOPLE)
 {
@@ -222,7 +220,6 @@ type Mutation
   createTreaty(input: CreateTreatyInput!): Treaty! @join__field(graph: COUNTRY)
   updateTreaty(input: UpdateTreatyInput!): Treaty! @join__field(graph: COUNTRY)
   removeTreaty(id: Int!): Treaty! @join__field(graph: COUNTRY)
-  restaurantUpdatedEvent(input: UpdateRestaurantInput): Int @join__field(graph: EVENTS)
   createRestaurant(input: CreateRestaurantInput!): Restaurant! @join__field(graph: FOOD)
   updateRestaurant(input: UpdateRestaurantInput!): Restaurant! @join__field(graph: FOOD)
   removeRestaurant(id: Int!): Int @join__field(graph: FOOD)
@@ -258,7 +255,6 @@ enum PriceRange
 type Query
   @join__type(graph: AUTH)
   @join__type(graph: COUNTRY)
-  @join__type(graph: EVENTS)
   @join__type(graph: FOOD)
   @join__type(graph: PEOPLE)
 {
@@ -274,7 +270,6 @@ type Query
   city(id: Int!): City! @join__field(graph: COUNTRY)
   treaties: [Treaty!]! @join__field(graph: COUNTRY)
   treaty(id: Int!): Treaty! @join__field(graph: COUNTRY)
-  hello: String @join__field(graph: EVENTS)
   restaurants(name: String): [Restaurant!]! @join__field(graph: FOOD)
   restaurant(id: Int!): Restaurant! @join__field(graph: FOOD)
   meals(name: String): [Meal!]! @join__field(graph: FOOD)
@@ -312,6 +307,7 @@ type Role
   id: Int!
   name: String!
   description: String!
+  dummy: String!
   rights: [Right!]
   users: [User!]
 }
@@ -358,12 +354,12 @@ input UpdateMealInput
 }
 
 input UpdateRestaurantInput
-  @join__type(graph: EVENTS)
   @join__type(graph: FOOD)
 {
-  id: Int!
   name: String
-  cityId: Int! @join__field(graph: EVENTS, type: "Int!") @join__field(graph: FOOD, type: "Int")
+  priceRange: PriceRange
+  cityId: Int
+  id: Int!
 }
 
 input UpdateRightInput
