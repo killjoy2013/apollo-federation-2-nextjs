@@ -159,7 +159,6 @@ export type Mutation = {
   removeRole: Scalars['Int'];
   removeTreaty: Treaty;
   removeUser: Scalars['Int'];
-  restaurantUpdatedEvent?: Maybe<Scalars['Int']>;
   revokeAllRolesFromUser: Scalars['String'];
   revokeRightFromRole: Scalars['String'];
   revokeRoleFromUser: Scalars['String'];
@@ -292,11 +291,6 @@ export type MutationRemoveUserArgs = {
 };
 
 
-export type MutationRestaurantUpdatedEventArgs = {
-  input?: InputMaybe<UpdateRestaurantInput>;
-};
-
-
 export type MutationRevokeRightFromRoleArgs = {
   rightName: Scalars['String'];
   roleName: Scalars['String'];
@@ -365,7 +359,6 @@ export type Query = {
   city: City;
   countries: Array<Country>;
   findOne: Country;
-  hello?: Maybe<Scalars['String']>;
   hobbies: Array<Hobby>;
   hobby: Hobby;
   meal: Meal;
@@ -496,6 +489,7 @@ export type Right = {
 export type Role = {
   __typename?: 'Role';
   description: Scalars['String'];
+  dummy: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
   rights?: Maybe<Array<Right>>;
@@ -535,9 +529,10 @@ export type UpdateMealInput = {
 };
 
 export type UpdateRestaurantInput = {
-  cityId: Scalars['Int'];
+  cityId?: InputMaybe<Scalars['Int']>;
   id: Scalars['Int'];
   name?: InputMaybe<Scalars['String']>;
+  priceRange?: InputMaybe<PriceRange>;
 };
 
 export type UpdateRightInput = {
@@ -577,7 +572,6 @@ export type User = {
 export enum Join__Graph {
   Auth = 'AUTH',
   Country = 'COUNTRY',
-  Events = 'EVENTS',
   Food = 'FOOD',
   People = 'PEOPLE'
 }

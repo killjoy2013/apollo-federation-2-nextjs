@@ -5,3 +5,7 @@ APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA \
   --schema ./introspect.schema.graphql \
   --name food \
   --routing-url http://localhost:3300/graphql
+
+
+APOLLO_KEY=service:FederatedGraph21:zFRC1bZBrp0EKt81St3vLA \
+rover subgraph check FederatedGraph21@current --name food --schema ./introspect.schema.graphql
