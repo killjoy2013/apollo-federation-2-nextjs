@@ -32,72 +32,11 @@ async function authAndCreateUser(username: string, password: string) {
   };
 }
 
-// async function refreshToken(oldToken: JWT): Promise<any> {
-//   return new Promise(async (resolve, reject) => {
-//     const username = oldToken.username as string;
-
-//     console.log(
-//       `${username} token will refresh on ${new Date().toLocaleTimeString()}`,
-//     );
-
-//     try {
-//       const user = await prisma.user.findFirst({
-//         where: {
-//           username,
-//         },
-//       });
-
-//       if (!user || !user.refreshToken) {
-//         signOut();
-//         reject(`${username} not found or refresh token is empty!`);
-//       }
-
-//       jsonwebtoken.verify(user.refreshToken, process.env.TOKEN_SECRET) as JWT;
-
-//       // eslint-disable-next-line unused-imports/no-unused-vars
-//       const { iat, exp, ...others } = oldToken;
-
-//       const rights = await getRights(user.username);
-
-//       const newToken = {
-//         ...others,
-//         rights,
-//         accessTokenExpires:
-//           Date.now() + parseInt(process.env.TOKEN_REFRESH_PERIOD) * 1000,
-//       };
-
-//       const newRefreshToken = jsonwebtoken.sign(
-//         newToken,
-//         process.env.TOKEN_SECRET,
-//         {
-//           expiresIn: parseInt(process.env.TOKEN_MAX_AGE),
-//           algorithm: 'HS512',
-//         },
-//       );
-
-//       await prisma.user.update({
-//         where: {
-//           username,
-//         },
-//         data: {
-//           refreshToken: newRefreshToken,
-//         },
-//       });
-
-//       resolve(newToken);
-//     } catch (error) {
-//       console.log(error);
-//       reject(error);
-//     }
-//   });
-// }
-
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
   jwt: {
-    secret: process.env.TOKEN_SECRET,
     encode: async (params: JWTEncodeParams): Promise<string> => {
       const { token } = params;
 
@@ -135,25 +74,12 @@ export const authOptions: NextAuthOptions = {
         // eslint-disable-next-line unused-imports/no-unused-vars
         const { id, ...rest } = user;
 
-        //console.log('WILL USE USER', rest);
-
         return { ...rest };
       }
-
-      //const left = ((token.accessTokenExpires as number) - Date.now()) / 1000;
-
-      //if (left > 0) {
-
-      //console.log('WILL USE TOKEN', token);
 
       return {
         ...token,
       };
-      // } else {
-      //   const newToken = await refreshToken(token);
-
-      //   return newToken;
-      // }
     },
   },
   providers: [
@@ -182,6 +108,7 @@ export const authOptions: NextAuthOptions = {
   ],
   events: {
     async signOut({ token }) {
+      console.log(token);
       // await prisma.user.update({
       //   where: {
       //     username: token.username as string,

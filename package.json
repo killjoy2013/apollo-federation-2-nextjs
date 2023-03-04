@@ -7,10 +7,13 @@
   "author": "murat arslan <killjoy_tr@yahoo.com>",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently --names \"country,food,auth,people,events\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgYellow.bold,bgGrey.bold\" \"yarn workspace country start:dev\" \"yarn workspace food start:dev\" \"yarn workspace auth start:dev\" \"yarn workspace people start:dev\" \"yarn workspace events start:dev\"",
-    "start:gateway": "yarn workspace gateway start:dev"
+    "start": "concurrently --names \"country,food,auth,people\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgYellow.bold,bgGrey.bold\" \"yarn workspace country start:dev\" \"yarn workspace food start:dev\" \"yarn workspace auth start:dev\" \"yarn workspace people start:dev\"",
+    "build": "concurrently --names \"country,food,auth,people\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgYellow.bold,bgGrey.bold\" \"yarn workspace country build\" \"yarn workspace food build\" \"yarn workspace auth build\" \"yarn workspace people build\"",
+    "start:gateway": "concurrently --names \"gateway-external,gateway-internal\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn workspace gateway-external start:dev\" \"yarn workspace gateway-internal start:dev\"",
+    "build:gateway": "concurrently --names \"gateway-external,gateway-internal\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn workspace gateway-external build\" \"yarn workspace gateway-internal build\""
   },
   "dependencies": {
+    "@apollo/gateway": "^2.3.2",
     "@apollo/server": "^4.4.0",
     "@apollo/subgraph": "~2.1.4",
     "@nestjs/apollo": "~10.1.7",
@@ -40,11 +43,12 @@
     "graphql-type-json": "~0.3.2",
     "ioredis": "^5.3.1",
     "js-yaml": "~4.1.0",
+    "jwks-rsa": "^3.0.1",
     "passport-jwt": "~4.0.0",
     "passport-local": "~1.0.0",
     "pg": "~8.8.0",
     "pg-connection-string": "~2.5.0",
-    "reflect-metadata": "~0.1.13",
+    "reflect-metadata": "^0.1.13",
     "rimraf": "~3.0.2",
     "rxjs": "~7.2.0",
     "ts-morph": "^17.0.1",

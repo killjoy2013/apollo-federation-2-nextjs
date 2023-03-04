@@ -13,7 +13,6 @@ import { MealModule } from './meal/meal.module';
 import { City } from './restaurant/entities/city.proxy.entity';
 import { RestaurantModule } from './restaurant/restaurant.module';
 
-export type MyContextType = { username: string; rights: Array<string> };
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),

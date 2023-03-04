@@ -15,8 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const options = {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      //secretOrKey: jwtOptions.publicKey,
-      secretOrKey: 'topsecret',
+      secretOrKey: jwtOptions.publicKey,
       algorithm: jwtOptions.signOptions.algorithm,
     };
 

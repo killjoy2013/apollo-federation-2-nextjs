@@ -7,7 +7,7 @@ export interface JwtConfig {
   publicKey?: string;
   jwk?: string;
   algorithm?: Algorithm;
-  secret: string;
+
   kid: string;
   iss: string;
 }
