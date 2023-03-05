@@ -11,7 +11,10 @@ import { GraphQLModule } from '@nestjs/graphql';
       driver: ApolloGatewayDriver,
       server: {
         // ... Apollo server options
-        cors: true,
+        cors: {
+          origin: process.env.ALLOWED_URL,
+          credentials: true,
+        },
         introspection: true,
         //plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
       },

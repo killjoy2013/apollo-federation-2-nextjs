@@ -307,7 +307,6 @@ type Role
   id: Int!
   name: String!
   description: String!
-  dummy: String!
   rights: [Right!]
   users: [User!]
 }

@@ -164,7 +164,6 @@ export type Mutation = {
   removeRole: Scalars['Int'];
   removeTreaty: Treaty;
   removeUser: Scalars['Int'];
-  restaurantUpdatedEvent?: Maybe<Scalars['Int']>;
   revokeAllRolesFromUser: Scalars['String'];
   revokeRightFromRole: Scalars['String'];
   revokeRoleFromUser: Scalars['String'];
@@ -297,11 +296,6 @@ export type MutationRemoveUserArgs = {
 };
 
 
-export type MutationRestaurantUpdatedEventArgs = {
-  input?: InputMaybe<UpdateRestaurantInput>;
-};
-
-
 export type MutationRevokeRightFromRoleArgs = {
   rightName: Scalars['String'];
   roleName: Scalars['String'];
@@ -370,7 +364,6 @@ export type Query = {
   city: City;
   countries: Array<Country>;
   findOne: Country;
-  hello?: Maybe<Scalars['String']>;
   hobbies: Array<Hobby>;
   hobby: Hobby;
   meal: Meal;
@@ -487,6 +480,7 @@ export type Restaurant = {
   meals?: Maybe<Array<Meal>>;
   name: Scalars['String'];
   priceRange?: Maybe<PriceRange>;
+  size?: Maybe<Size>;
 };
 
 export type Right = {
@@ -505,6 +499,12 @@ export type Role = {
   rights?: Maybe<Array<Right>>;
   users?: Maybe<Array<User>>;
 };
+
+export enum Size {
+  Large = 'Large',
+  Medium = 'Medium',
+  Small = 'Small'
+}
 
 export type Treaty = {
   __typename?: 'Treaty';
@@ -533,9 +533,10 @@ export type UpdateMealInput = {
 };
 
 export type UpdateRestaurantInput = {
-  cityId: Scalars['Int'];
+  cityId?: InputMaybe<Scalars['Int']>;
   id: Scalars['Int'];
   name?: InputMaybe<Scalars['String']>;
+  priceRange?: InputMaybe<PriceRange>;
 };
 
 export type UpdateRightInput = {
@@ -575,7 +576,6 @@ export type User = {
 export enum Join__Graph {
   Auth = 'AUTH',
   Country = 'COUNTRY',
-  Events = 'EVENTS',
   Food = 'FOOD',
   People = 'PEOPLE'
 }
@@ -940,6 +940,7 @@ export type ResolversTypes = {
   Restaurant: ResolverTypeWrapper<Restaurant>;
   Right: ResolverTypeWrapper<Right>;
   Role: ResolverTypeWrapper<Role>;
+  Size: Size;
   Treaty: ResolverTypeWrapper<Treaty>;
   UpdateCityInput: UpdateCityInput;
   UpdateCountryInput: UpdateCountryInput;
@@ -1111,7 +1112,6 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   removeRole?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationRemoveRoleArgs, 'id'>>;
   removeTreaty?: Resolver<ResolversTypes['Treaty'], ParentType, ContextType, RequireFields<MutationRemoveTreatyArgs, 'id'>>;
   removeUser?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationRemoveUserArgs, 'id'>>;
-  restaurantUpdatedEvent?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<MutationRestaurantUpdatedEventArgs>>;
   revokeAllRolesFromUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   revokeRightFromRole?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationRevokeRightFromRoleArgs, 'rightName' | 'roleName'>>;
   revokeRoleFromUser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1140,7 +1140,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   city?: Resolver<ResolversTypes['City'], ParentType, ContextType, RequireFields<QueryCityArgs, 'id'>>;
   countries?: Resolver<Array<ResolversTypes['Country']>, ParentType, ContextType>;
   findOne?: Resolver<ResolversTypes['Country'], ParentType, ContextType, RequireFields<QueryFindOneArgs, 'id'>>;
-  hello?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   hobbies?: Resolver<Array<ResolversTypes['Hobby']>, ParentType, ContextType, Partial<QueryHobbiesArgs>>;
   hobby?: Resolver<ResolversTypes['Hobby'], ParentType, ContextType, RequireFields<QueryHobbyArgs, 'id'>>;
   meal?: Resolver<ResolversTypes['Meal'], ParentType, ContextType, RequireFields<QueryMealArgs, 'id'>>;
@@ -1166,6 +1165,7 @@ export type RestaurantResolvers<ContextType = any, ParentType extends ResolversP
   meals?: Resolver<Maybe<Array<ResolversTypes['Meal']>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   priceRange?: Resolver<Maybe<ResolversTypes['PriceRange']>, ParentType, ContextType>;
+  size?: Resolver<Maybe<ResolversTypes['Size']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

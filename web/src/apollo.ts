@@ -57,11 +57,12 @@ function createIsomorphicLink() {
       : publicRuntimeConfig.graphqlUrlClient;
 
   const httpLink = new HttpLink({
+    credentials: 'include',
     uri,
     fetch: customFetch,
-    fetchOptions: {
-      credentials: 'include',
-    },
+    // headers: {
+    //   'my-header': 'testtttt',
+    // },
   });
 
   return httpLink;

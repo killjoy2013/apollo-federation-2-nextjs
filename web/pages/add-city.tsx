@@ -12,7 +12,6 @@ import MyAlert from 'components/alert';
 import { GetServerSidePropsContext } from 'next';
 import { getToken } from 'next-auth/jwt';
 import { getServerSession } from 'next-auth/next';
-import { useSession } from 'next-auth/react';
 import { FC, useEffect, useState } from 'react';
 import { initializeApollo } from 'src/apollo';
 import { alertMessageVar } from 'src/cache';
@@ -24,8 +23,6 @@ import {
   useCreateCityMutation,
 } from 'src/graphql/types';
 import { authOptions } from './api/auth/[...nextauth]';
-
-const token = `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyaWdodHMiOlsicmVtb3ZlQ2l0eSIsInJlbW92ZUNvdW50cnkiLCJjb3VudHJpZXMiLCJjaXRpZXMiXSwidXNlcm5hbWUiOiJhZG1pbiIsInN1YiI6MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMTAwIiwiaWF0IjoxNjc3MzI3NjAyLCJleHAiOjE2Nzk5MTk2MDJ9.h9iK8HWjQH9-VdbhvmrJWkpTY1rzV-u7noJxtmyT4CccYtvQLI06zclvCA8CzLBckJhQJSws8Pn4mKJCqVrianfx92MkrFaszX66Dx7CCN_sVRdixCFJRmvx-pO5gLYL61eLlQjPLGYeCkSmFBIZrOUFuB1QvzCkIEN2H66IvkcjoIR2oZrjVZrHAFiAohQHTboueldKX2dIgWypTMNNsSYKP3p9YnYydkoMKUKIAcby9rpdv0JnPXv5KBEZgnxriaAPR3K6ZyYe1oLGZ-4h_YDKPvBykqMc3B56-__c7yHqjFbGHyaLUA6AL8SjY_wPtkI8bBj_BAAQcJTzXVbgwb4eORYinnywt5a7GUG4_m-kOyJOLzjQfe9xc53TTZ2tAJFBRp6Wq15-LqDhfXUEEV5JAezHzABlL13kVv8ftHU4KRgrCYVxZO0Wf48drg-B4YtMZTQZbHrKxq4mL7j6OjaxFnojixvYZ_3LtH-6I00q17pzR5mB1CxKKqAlTA3-`;
 
 type AddCityType = {
   initialApolloState: NormalizedCache;
@@ -39,7 +36,7 @@ const AddCity: FC<AddCityType> = (props) => {
     loading,
     error,
   } = useCountriesQuery();
-  const { data: session, status } = useSession();
+  //const { data: session, status } = useSession();
   const [
     createCity,
     {
@@ -59,11 +56,6 @@ const AddCity: FC<AddCityType> = (props) => {
     createCity({
       variables: {
         input: { ...cityData },
-      },
-      context: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       },
     });
   };

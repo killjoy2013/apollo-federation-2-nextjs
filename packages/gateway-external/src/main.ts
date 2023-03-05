@@ -15,12 +15,27 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  server.use(
-    cors({
-      credentials: true,
-      origin: '*',
-    }),
-  );
+  // server.use(
+  //   cors({
+  //     origin: true,
+  //     credentials: false,
+  //   }),
+  // );
+
+  const whitelist = process.env.ALLOWED_URLS.split(';');
+
+  const corsOptions = {
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  };
+
+  server.use(cors(corsOptions));
 
   server.use(cookieParser());
 

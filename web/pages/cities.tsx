@@ -11,14 +11,13 @@ import {
 import MyAlert from 'components/alert';
 import { GetServerSidePropsContext } from 'next';
 
-import { useSession } from 'next-auth/react';
 import React, { FC, useEffect } from 'react';
-import { initializeApollo } from 'src/apollo';
 import { alertMessageVar } from 'src/cache';
 import { useCitiesQuery, useRemoveCityMutation } from 'src/graphql/types';
 import { authOptions } from './api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { getToken } from 'next-auth/jwt';
+import { initializeApollo } from 'src/apollo';
 import { Queries } from 'src/gql_definitions/queries';
 
 type CitiesType = {
@@ -27,8 +26,10 @@ type CitiesType = {
 };
 
 const Cities: FC<CitiesType> = (props) => {
-  const { data: session, status } = useSession();
   const { data, loading, error } = useCitiesQuery();
+
+  console.log('CITIES', data);
+
   const [
     removeCity,
     { data: removeData, loading: removeLoading, error: removeError },

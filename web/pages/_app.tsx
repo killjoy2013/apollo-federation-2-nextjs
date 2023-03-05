@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from 'styles/createEmotionCache';
 import theme from 'styles/theme';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Layout from 'components/layout';
 import getConfig from 'next/config';
 
@@ -22,13 +22,6 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-const reloadSession = () => {
-  setInterval(() => {
-    const event = new Event('visibilitychange');
-    document.dispatchEvent(event);
-  }, (parseInt(publicRuntimeConfig.tokenRefreshPeriod) * 1000) / 2);
-};
-
 function MyApp({
   router,
   Component,
@@ -36,10 +29,6 @@ function MyApp({
   emotionCache = clientSideEmotionCache,
 }: MyAppProps) {
   const client = useApollo(pageProps.initialApolloState);
-
-  useEffect(() => {
-    reloadSession();
-  }, []);
 
   return (
     <CacheProvider value={emotionCache}>

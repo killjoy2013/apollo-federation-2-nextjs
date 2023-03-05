@@ -12,7 +12,6 @@ module.exports = (phase, { defaultConfig }) => {
       publicRuntimeConfig: {
         graphqlUrlClient: process.env.GRAPHQL_URL_CLIENT,
         toolbarColor: process.env.TOOLBAR_COLOR,
-        tokenRefreshPeriod: process.env.TOKEN_REFRESH_PERIOD,
       },
       serverRuntimeConfig: {
         graphqlUrlSsr: process.env.GRAPHQL_URL_SSR,
@@ -26,7 +25,6 @@ module.exports = (phase, { defaultConfig }) => {
       publicRuntimeConfig: {
         graphqlUrlClient: process.env.GRAPHQL_URL_CLIENT,
         toolbarColor: process.env.TOOLBAR_COLOR,
-        tokenRefreshPeriod: process.env.TOKEN_REFRESH_PERIOD,
       },
       serverRuntimeConfig: {
         graphqlUrlSsr: process.env.GRAPHQL_URL_SSR,
