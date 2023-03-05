@@ -17,8 +17,9 @@ const Homepage = () => {
 };
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  debugger;
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
-
+  debugger;
   if (!session) {
     return {
       redirect: {

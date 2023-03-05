@@ -33,6 +33,7 @@ async function authAndCreateUser(username: string, password: string) {
 }
 
 export const authOptions: NextAuthOptions = {
+  secret: '',
   session: {
     strategy: 'jwt',
   },
@@ -90,8 +91,9 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('AUTHORIZE....');
         const { username, password } = credentials;
-
+        debugger;
         if (!username || !password) {
           throw new Error('enter username or password');
         }
