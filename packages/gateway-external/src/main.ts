@@ -55,6 +55,9 @@ async function bootstrap() {
       ? httpsCookie
       : httpCookie ?? authorizationHeaderToken;
     const client = jwksClient({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 10,
       jwksUri: 'http://localhost:3100/.well-known/jwks.json',
     });
     function getKey(header, callback) {

@@ -40,3 +40,8 @@ import { GraphQLModule } from '@nestjs/graphql';
   providers: [],
 })
 export class AppModule {}
+function ApolloServerPluginLandingPageLocalDefault(arg0: {
+  embed: boolean;
+}): import('apollo-server-core').PluginDefinition {
+  throw new Error('Function not implemented.');
+}
